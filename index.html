@@ -8,11 +8,11 @@
     
     <style>
         :root {
-            --bg-color: #FDFBF7;       /* ขาวครีมมินิมอล */
-            --primary-red: #D62828;   /* แดงสไตล์โมเดิร์น */
-            --primary-yellow: #F4A261;/* เหลืองมัสตาร์ด */
-            --accent-yellow: #E9C46A; /* เหลืองสว่าง */
-            --text-dark: #2B2D42;     /* ตัวอักษร */
+            --bg-color: #FDFBF7;
+            --primary-red: #D62828;
+            --primary-yellow: #F4A261;
+            --accent-yellow: #E9C46A;
+            --text-dark: #2B2D42;
             --card-bg: #FFFFFF;
             --border-color: #E2E8F0;
         }
@@ -21,53 +21,22 @@
             font-family: 'Sarabun', sans-serif;
             background-color: var(--bg-color);
             color: var(--text-dark);
-            margin: 0;
-            padding: 0;
+            margin: 0; padding: 0;
             box-sizing: border-box;
         }
 
-        /* ระบบสลับหน้าเดี่ยว (SPA) */
-        .view {
-            display: none;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 30px 20px;
-        }
-        .view.active {
-            display: block;
-        }
+        .view { display: none; max-width: 1200px; margin: 0 auto; padding: 30px 20px; }
+        .view.active { display: block; }
 
-        /* หัวข้อสไตล์ Minimal */
         .brand-title {
-            text-align: center;
-            font-size: 32px;
-            font-weight: 700;
-            margin-bottom: 25px;
-            color: var(--primary-red);
-            border-bottom: 4px solid var(--primary-yellow);
-            display: inline-block;
-            padding-bottom: 5px;
+            text-align: center; font-size: 32px; font-weight: 700; margin-bottom: 25px;
+            color: var(--primary-red); border-bottom: 4px solid var(--primary-yellow);
+            display: inline-block; padding-bottom: 5px;
         }
         
-        .center-wrapper {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 80vh;
-        }
+        .center-wrapper { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 80vh; }
+        .minimal-box { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 35px; width: 100%; max-width: 420px; box-shadow: 0 4px 20px rgba(0,0,0,0.02); }
 
-        .minimal-box {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 35px;
-            width: 100%;
-            max-width: 420px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.02);
-        }
-
-        /* ฟอร์มป้อนข้อมูล */
         .form-group { margin-bottom: 18px; }
         label { display: block; margin-bottom: 6px; font-weight: 500; font-size: 14px; }
         input[type="text"], input[type="password"], select, textarea {
@@ -75,74 +44,40 @@
             font-family: 'Sarabun', sans-serif; border: 1px solid var(--border-color);
             border-radius: 8px; background-color: #FCFCFA; transition: all 0.2s;
         }
-        input:focus, select:focus, textarea:focus {
-            outline: none; border-color: var(--primary-red); background-color: #FFF;
-        }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary-red); background-color: #FFF; }
 
-        /* แท็ปตัวเลือกวิชา (Filter Tabs) */
-        .tabs-container {
-            display: flex; gap: 10px; margin: 20px 0; overflow-x: auto; padding-bottom: 5px;
-        }
-        .tab-btn {
-            background: #F1F5F9; padding: 10px 20px; border-radius: 20px;
-            cursor: pointer; font-weight: 500; font-size: 14px; white-space: nowrap; transition: 0.2s;
-        }
-        .tab-btn.active {
-            background: var(--primary-red); color: white;
-        }
+        .tabs-container { display: flex; gap: 10px; margin: 20px 0; overflow-x: auto; padding-bottom: 5px; }
+        .tab-btn { background: #F1F5F9; padding: 10px 20px; border-radius: 20px; cursor: pointer; font-weight: 500; font-size: 14px; white-space: nowrap; transition: 0.2s; }
+        .tab-btn.active { background: var(--primary-red); color: white; }
 
-        /* ปุ่มคีย์บอร์ดคณิตศาสตร์เสริม (Page 8) */
-        .math-toolbar {
-            display: flex; gap: 6px; margin-bottom: 8px; flex-wrap: wrap;
-        }
-        .math-btn {
-            background: #E2E8F0; padding: 5px 10px; border-radius: 4px;
-            font-size: 13px; font-weight: bold; cursor: pointer;
-        }
+        .math-toolbar { display: flex; gap: 6px; margin-bottom: 8px; flex-wrap: wrap; }
+        .math-btn { background: #E2E8F0; padding: 5px 10px; border-radius: 4px; font-size: 13px; font-weight: bold; cursor: pointer; }
         .math-btn:hover { background: #CBD5E1; }
 
-        /* ปุ่มกด */
-        button {
-            font-family: 'Sarabun', sans-serif; font-weight: 500;
-            padding: 12px 24px; border: none; border-radius: 8px; cursor: pointer; transition: all 0.2s;
-        }
+        button { font-family: 'Sarabun', sans-serif; font-weight: 500; padding: 12px 24px; border: none; border-radius: 8px; cursor: pointer; transition: all 0.2s; }
         .btn-primary { background-color: var(--primary-red); color: white; width: 100%; font-size: 16px; }
         .btn-primary:hover { background-color: #B31F1F; }
         .btn-secondary { background-color: var(--accent-yellow); color: var(--text-dark); }
         .btn-secondary:hover { background-color: #DFBA5C; }
         .btn-link { background: none; color: #64748B; text-decoration: underline; margin-top: 15px; font-size: 14px; }
 
-        /* การจัดเรียงกล่องแบบแถวนอน 4 กล่อง (Grid) */
-        .quiz-grid {
-            display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 25px;
-        }
+        .quiz-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 25px; }
         @media (max-width: 1024px) { .quiz-grid { grid-template-columns: repeat(2, 1fr); } }
         @media (max-width: 640px) { .quiz-grid { grid-template-columns: 1fr; } }
 
-        .quiz-card {
-            background: white; border: 1px solid var(--border-color);
-            border-top: 5px solid var(--primary-red); border-radius: 12px;
-            padding: 20px; display: flex; flex-direction: column; justify-content: space-between;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.01);
-        }
+        .quiz-card { background: white; border: 1px solid var(--border-color); border-top: 5px solid var(--primary-red); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 4px 10px rgba(0,0,0,0.01); }
 
-        /* โครงสร้างหน้าทำข้อสอบ (ย่อยภายใน) */
         .manage-layout { display: grid; grid-template-columns: 280px 1fr; gap: 30px; margin-top: 20px; }
         @media (max-width: 768px) { .manage-layout { grid-template-columns: 1fr; } }
         .sidebar { background: white; border: 1px solid var(--border-color); padding: 20px; border-radius: 12px; }
         
-        .question-node {
-            padding: 12px; margin-bottom: 8px; border-radius: 8px;
-            border: 1px solid var(--border-color); cursor: pointer;
-            display: flex; justify-content: space-between; align-items: center; font-weight: 500;
-        }
+        .question-node { padding: 12px; margin-bottom: 8px; border-radius: 8px; border: 1px solid var(--border-color); cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: 500; }
         .question-node.active { background-color: #FFFDF9; border-color: var(--primary-yellow); }
 
-        /* วงกลมจุดสีบอกสถานะตรวจคำตอบ */
         .status-dot { width: 12px; height: 12px; border-radius: 50%; background-color: #CBD5E1; }
-        .status-dot.green { background-color: #22C55E; }  /* ตอบถูก / แอดมินใส่เฉลยแล้ว */
-        .status-dot.red { background-color: #EF4444; }    /* ตอบผิด */
-        .status-dot.yellow { background-color: #EAB308; } /* ยังไม่มีคีย์เฉลย */
+        .status-dot.green { background-color: #22C55E; }
+        .status-dot.red { background-color: #EF4444; }
+        .status-dot.yellow { background-color: #EAB308; }
 
         .score-box { margin-top: 15px; background: #FFFBFB; border-radius: 8px; padding: 12px; font-size: 13px; border: 1px dashed #FED7D7; }
         .score-box ul { padding-left: 15px; margin: 5px 0 0 0; }
@@ -173,7 +108,7 @@
                 <h3 style="margin-top:0;">🔒 ผู้ดูแลระบบ (Admin)</h3>
                 <div class="form-group">
                     <label>Password :</label>
-                    <input type="password" id="adminPassword" placeholder="กรอกรหัสผ่าน (tkit1)...">
+                    <input type="password" id="adminPassword" placeholder="กรอกรหัสผ่าน...">
                 </div>
                 <button class="btn-primary" id="btnAdminLogin">Enter</button>
                 <center><button class="btn-link" onclick="switchView('view-landing')">กลับไปหน้าหลักผู้เล่น</button></center>
@@ -186,10 +121,8 @@
             <h2>สวัสดีคุณ: <span id="displayPlayerName" style="color:var(--primary-red);"></span> ✏️</h2>
             <button class="btn-secondary" onclick="switchView('view-landing')">ออกจากระบบ</button>
         </div>
-        
         <h3>เลือกแท็บวิชาที่ต้องการสอบ:</h3>
         <div class="tabs-container" id="playerSubjectTabs"></div>
-
         <div id="playerQuizGrid" class="quiz-grid"></div>
     </div>
 
@@ -201,18 +134,15 @@
             </div>
             <button class="btn-secondary" onclick="switchView('view-player-dashboard')">⚙️ กลับหน้ารวมวิชา</button>
         </div>
-
         <div class="manage-layout">
             <div class="sidebar">
                 <h4>📌 บอร์ดข้อสอบ</h4>
                 <div id="playerQuestionNodes"></div>
             </div>
-
             <div style="background: white; border: 1px solid var(--border-color); padding: 30px; border-radius: 12px;">
                 <h3 id="pQuestionTitle">ข้อสอบ</h3>
                 <img id="pQuestionImage" class="quiz-img" src="" alt="รูปภาพประกอบโจทย์" style="display:none;">
                 <p id="pQuestionText" style="font-size: 18px; line-height: 1.6; background: #FAF9F5; padding: 15px; border-radius: 8px; border-left: 4px solid var(--primary-yellow);"></p>
-                
                 <div class="form-group" style="margin-top: 20px;">
                     <label>พิมพ์คำตอบของคุณที่นี่:</label>
                     <input type="text" id="playerAnswerInput" placeholder="กรอกคำตอบจำเพาะลงตรงนี้...">
@@ -227,12 +157,11 @@
             <h2>ระบบจัดการชุดข้อสอบหลังบ้าน (Admin)</h2>
             <button class="btn-secondary" onclick="switchView('view-landing')">ออกจากระบบ Admin</button>
         </div>
-
         <div style="background: white; border: 1px solid var(--border-color); border-radius: 16px; padding: 25px; margin-top: 25px; max-width: 600px;">
             <h3>➕ สร้างชุดข้อสอบหัวข้อใหม่</h3>
             <div class="form-group">
                 <label>ชื่อชุดข้อสอบ (กรอกชื่อข้อสอบ):</label>
-                <input type="text" id="examNameInput" placeholder="เช่น: ดาราศาสตร์มิติควอนตัม ม.6">
+                <input type="text" id="examNameInput" placeholder="เช่น: แคลคูลัสพื้นฐาน ม.6">
             </div>
             <div class="form-group">
                 <label>ชื่อวิชา (เลือกแท็บวิชา):</label>
@@ -248,10 +177,9 @@
                 <label>คะแนนข้อละ (ใส่ "-" ไว้ก่อนเพื่อตั้งค่าแยกทีหลังได้):</label>
                 <input type="text" id="scoreInput" value="-">
             </div>
-            <button class="btn-primary" id="btnCreate" style="background-color: var(--primary-red); color: white;">สร้างชุดข้อสอบสำเร็จ</button>
+            <button class="btn-primary" id="btnCreate">สร้างชุดข้อสอบสำเร็จ</button>
         </div>
-
-        <h3 style="margin-top: 35px;">📦 รายการชุดข้อสอบในคลัง (เรียงแนวนอนแถวละ 4 ชุดพอดิบพอดี)</h3>
+        <h3 style="margin-top: 35px;">📦 รายการชุดข้อสอบในคลัง (แสดงแถวละ 4 ชุด)</h3>
         <div id="adminQuizGrid" class="quiz-grid"></div>
     </div>
 
@@ -260,50 +188,42 @@
             <button class="btn-secondary" onclick="switchView('view-admin-dashboard')" style="margin-bottom: 10px;">⬅ กลับหน้ารวมกล่องข้อสอบ</button>
             <h2 id="adminEditingTitle">ชุดข้อสอบ: ...</h2>
         </div>
-
         <div class="manage-layout">
             <div class="sidebar">
                 <h4>📋 แผงข้อสอบย่อย</h4>
                 <div id="adminQuestionNodes"></div>
                 <button class="btn-secondary" id="btnAdminAddNewQ" style="width: 100%; margin-top: 15px; font-size: 13px;">+ เพิ่มข้อต่อไป</button>
             </div>
-
             <div style="background: white; border: 1px solid var(--border-color); padding: 30px; border-radius: 12px;">
                 <h3 id="adminFormTitle">แก้ไขรายละเอียดคำถาม</h3>
                 <input type="hidden" id="adminCurrentQId">
-                
                 <div class="form-group">
                     <label>ลำดับข้อที่:</label>
                     <input type="text" id="adminQNum" readonly style="background: #E2E8F0;">
                 </div>
-
                 <div class="form-group">
                     <label>ลิงก์รูปภาพประกอบคำถาม (Image URL):</label>
                     <input type="text" id="adminQImage" placeholder="วาง URL ลิงก์รูปภาพตรงนี้...">
                 </div>
-
                 <div class="form-group">
-                    <label>พิมพ์คำถาม/โจทย์ข้อสอบ (TH Sarabun รองรับสัญลักษณ์คณิตศาสตร์):</label>
+                    <label>พิมพ์คำถาม/โจทย์ข้อสอบ (TH Sarabun รองรับสัญลักษณ์พิเศษ):</label>
                     <div class="math-toolbar" data-target="adminQText">
                         <div class="math-btn">α</div><div class="math-btn">β</div><div class="math-btn">π</div><div class="math-btn">θ</div>
                         <div class="math-btn">log(</div><div class="math-btn">ln(</div><div class="math-btn">√(</div>
                     </div>
-                    <textarea id="adminQText" rows="4" placeholder="กรอกเนื้อหาคำถาม... สามารถเลือกใช้สัญลักษณ์คณิตศาสตร์ด้านบนได้"></textarea>
+                    <textarea id="adminQText" rows="4" placeholder="กรอกเนื้อหาคำถาม..."></textarea>
                 </div>
-
                 <div class="form-group">
-                    <label>กรอกคำตอบที่ถูกต้อง (คีย์สำหรับตรวจคะแนนเฉลย):</label>
+                    <label>กรอกคำตอบที่ถูกต้อง (คีย์สำหรับตรวจคะแนน):</label>
                     <div class="math-toolbar" data-target="adminQAnswer">
                         <div class="math-btn">α</div><div class="math-btn">β</div><div class="math-btn">π</div><div class="math-btn">log(</div>
                     </div>
                     <input type="text" id="adminQAnswer" placeholder="พิมพ์เฉลยจริงประจำข้อนี้...">
                 </div>
-
                 <div class="form-group">
                     <label>กำหนดคะแนนประจำข้อนี้เฉพาะเจาะจง:</label>
                     <input type="text" id="adminQScore" value="5">
                 </div>
-
                 <button class="btn-primary" id="btnAdminSaveQ">💾 บันทึกโจทย์และเฉลยข้อนี้แบบ Realtime</button>
             </div>
         </div>
@@ -313,7 +233,6 @@
         import { database } from "./firebase-config.js";
         import { ref, push, update, onValue, set } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-        // ตัวแปรเก็บสถานะฝั่งระบบ
         let currentPlayerName = "";
         let currentSessionId = "";
         let currentQuizId = "";
@@ -328,13 +247,12 @@
 
         const subjects = ["คณิตศาสตร์", "ฟิสิกส์", "ดาราศาสตร์", "ชีววิทยา", "เคมี"];
 
-        // ฟังก์ชันสลับการมองเห็นหน้าจอ (SPA Router)
         window.switchView = function(viewId) {
             document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
             document.getElementById(viewId).classList.add('active');
         };
 
-        // --- ระบบผูกมัดปุ่มคีย์บอร์ดลัดคณิตศาสตร์ (PAGE 8) ---
+        // ผูกมัดปุ่มคีย์บอร์ดภาษากรีก/คณิตศาสตร์ (PAGE 8)
         document.querySelectorAll('.math-toolbar').forEach(bar => {
             const targetId = bar.getAttribute('data-target');
             const targetInput = document.getElementById(targetId);
@@ -351,10 +269,10 @@
             });
         });
 
-        // --- ล็อกอินผู้ใช้ปกติ (PAGE 1 -> PAGE 2) ---
+        // แก้ไขปุ่มล็อกอินฝั่งผู้เล่นให้ใช้งานได้จริง ไม่แสดง Alert พัฒนาแล้ว
         document.getElementById('btnPlayerLogin').addEventListener('click', () => {
             const name = document.getElementById('playerNameInput').value.trim();
-            if(!name) { alert('กรุณาระบุชื่อ-นามสกุล หรือชื่อเล่นก่อนเข้าเรียนครับ [cite: 5]'); return; }
+            if(!name) { alert('กรุณาระบุชื่อก่อนเข้าเรียนครับ'); return; }
             currentPlayerName = name;
             document.getElementById('displayPlayerName').innerText = name;
             document.getElementById('displayPlayerNameQuiz').innerText = name;
@@ -362,18 +280,18 @@
             switchView('view-player-dashboard');
         });
 
-        // --- ตรวจสอบรหัสผ่านแอดมินแก้เป็น tkit1 (PAGE 4 -> PAGE 5) ---
+        // ล็อกอิน Admin ด้วยรหัสผ่านจริง "tkit1"
         document.getElementById('btnAdminLogin').addEventListener('click', () => {
             const pass = document.getElementById('adminPassword').value;
             if(pass === "tkit1") {
                 document.getElementById('adminPassword').value = "";
                 switchView('view-admin-dashboard');
             } else {
-                alert('รหัสผ่านแอดมินไม่ถูกต้อง! กรุณาลองใหม่อีกครั้ง');
+                alert('รหัสผ่านแอดมินไม่ถูกต้อง!');
             }
         });
 
-        // --- ดึงข้อมูลคลัง Realtime ทั่วโลกจากระบบเดลต้าเซิร์ฟเวอร์ ---
+        // โหลดข้อมูลแบบ Realtime จาก Firebase
         onValue(ref(database, 'quizzes'), (snapshot) => {
             globalQuizzes = snapshot.val() || {};
             renderAdminDashboard();
@@ -385,16 +303,16 @@
             renderAdminDashboard();
         });
 
-        // --- จัดการบอร์ด ADMIN (PAGE 5 & 6) ---
+        // ระบบ Admin
         document.getElementById('btnCreate').addEventListener('click', () => {
             const name = document.getElementById('examNameInput').value.trim();
             const sub = document.getElementById('subjectSelect').value;
             const score = document.getElementById('scoreInput').value.trim();
-            if(!name) { alert('กรุณากรอกชื่อชุดข้อสอบด้วยครับ [cite: 56]'); return; }
+            if(!name) { alert('กรุณากรอกชื่อชุดข้อสอบ'); return; }
 
             const newRef = push(ref(database, 'quizzes'));
             update(newRef, { examName: name, subject: sub, baseScorePerQuestion: score }).then(() => {
-                alert('บันทึกชุดข้อสอบใหม่เรียบร้อย!');
+                alert('สร้างชุดข้อสอบสำเร็จ!');
                 document.getElementById('examNameInput').value = "";
             });
         });
@@ -426,15 +344,12 @@
                         <select id="adSub-${id}">
                             ${subjects.map(s => `<option value="${s}" ${data.subject===s?'selected':''}>${s}</option>`).join('')}
                         </select>
-                        <small>ค่าตั้งต้น: ${data.baseScorePerQuestion} คะแนน [cite: 60]</small>
+                        <small>ค่าตั้งต้น: ${data.baseScorePerQuestion} คะแนน</small>
                     </div>
-                    <div class="card-actions">
-                        <button class="btn-secondary ad-save" data-id="${id}" style="width:100%; padding:8px;">💾 บันทึกหัวข้อ</button>
-                        <button class="btn-primary ad-manage" data-id="${id}" style="width:100%; padding:8px;">Enter จัดการโจทย์ ➔ [cite: 77]</button>
-                        <div class="score-box">
-                            <strong>📊 คะแนนล่าสุด:</strong>
-                            <ul>${statHtml}</ul>
-                        </div>
+                    <div style="margin-top:10px;">
+                        <button class="btn-secondary ad-save" data-id="${id}" style="width:100%; padding:8px; margin-bottom:5px;">💾 บันทึกหัวข้อ</button>
+                        <button class="btn-primary ad-manage" data-id="${id}" style="width:100%; padding:8px;">Enter จัดการโจทย์ ➔</button>
+                        <div class="score-box"><strong>📊 ผลสอบล่าสุด:</strong><ul>${statHtml}</ul></div>
                     </div>
                 `;
                 container.appendChild(card);
@@ -450,13 +365,10 @@
             });
 
             container.querySelectorAll('.ad-manage').forEach(b => {
-                b.addEventListener('click', (e) => {
-                    openAdminQuizManage(e.target.getAttribute('data-id'));
-                });
+                b.addEventListener('click', (e) => { openAdminQuizManage(e.target.getAttribute('data-id')); });
             });
         }
 
-        // --- ระบบย่อยแอดมินอัปเกรดเนื้อหาโจทย์ (PAGE 7) ---
         function openAdminQuizManage(quizId) {
             currentQuizId = quizId;
             document.getElementById('adminEditingTitle').innerText = `จัดการชุด: ${globalQuizzes[quizId].examName}`;
@@ -508,9 +420,6 @@
             document.getElementById('adminQText').value = data.questionText || "";
             document.getElementById('adminQAnswer').value = data.correctAnswer || "";
             document.getElementById('adminQScore').value = data.score || "5";
-            document.querySelectorAll('#adminQuestionNodes .question-node').forEach((n, idx) => {
-                n.classList.toggle('active', Object.keys(currentQuizQuestions)[idx] === id);
-            });
         }
 
         document.getElementById('btnAdminAddNewQ').addEventListener('click', () => {
@@ -525,17 +434,15 @@
             const ans = document.getElementById('adminQAnswer').value.trim();
             const scr = document.getElementById('adminQScore').value.trim();
 
-            if(!text) { alert('กรุณาระบุเนื้อคำถามด้วยครับ [cite: 92]'); return; }
-
+            if(!text) { alert('กรุณาระบุเนื้อคำถามด้วยครับ'); return; }
             if(!qid) qid = push(ref(database, `quizzes/${currentQuizId}/questions`)).key;
 
             set(ref(database, `quizzes/${currentQuizId}/questions/${qid}`), {
                 questionNumber: num, imageUrl: img, questionText: text, correctAnswer: ans, score: scr
-            }).then(() => alert(`บันทึกโจทย์ข้อที่ ${num} สำเร็จเรียบร้อย!`));
+            }).then(() => alert(`บันทึกโจทย์ข้อที่ ${num} สำเร็จ!`));
         });
 
-
-        // --- ระบบผู้เล่นทำข้อสอบได้จริง (PAGE 2 & PAGE 3) ---
+        // ระบบฝั่งผู้เล่นทำงานจริง
         function renderPlayerTabs() {
             const container = document.getElementById('playerSubjectTabs');
             container.innerHTML = subjects.map(s => 
@@ -553,7 +460,6 @@
             const container = document.getElementById('playerQuizGrid');
             if(!container) return;
             container.innerHTML = '';
-            
             const ids = Object.keys(globalQuizzes);
             let count = 0;
 
@@ -566,22 +472,18 @@
                 card.className = 'quiz-card';
                 card.innerHTML = `
                     <div>
-                        <h4 style="margin:0 0 10px 0; color:var(--primary-red);">${data.examName} [cite: 8]</h4>
-                        <p style="margin:5px 0; font-size:13px;">หมวดวิชา: <b>${data.subject}</b> [cite: 59]</p>
+                        <h4 style="margin:0 0 10px 0; color:var(--primary-red);">${data.examName}</h4>
+                        <p style="margin:5px 0; font-size:13px;">หมวดวิชา: <b>${data.subject}</b></p>
                     </div>
-                    <button class="btn-primary start-quiz" data-id="${id}" style="margin-top:15px; font-size:14px; background-color:var(--primary-yellow); color:black;">Enter เข้าทำข้อสอบ ➔ [cite: 15]</button>
+                    <button class="btn-primary start-quiz" data-id="${id}" style="margin-top:15px; font-size:14px; background-color:var(--primary-yellow); color:black;">Enter เข้าทำข้อสอบ ➔</button>
                 `;
                 container.appendChild(card);
             });
 
-            if(count === 0) {
-                container.innerHTML = `<p style="grid-column:span 4; text-align:center; color:#888;">ไม่มีวิชา ${selectedSubjectFilter} เปิดอยู่ในขณะนี้</p>`;
-            }
+            if(count === 0) container.innerHTML = `<p style="grid-column:span 4; text-align:center; color:#888;">ไม่มีวิชา ${selectedSubjectFilter} เปิดอยู่ในขณะนี้</p>`;
 
             container.querySelectorAll('.start-quiz').forEach(b => {
-                b.addEventListener('click', (e) => {
-                    startPlayerQuiz(e.target.getAttribute('data-id'));
-                });
+                b.addEventListener('click', (e) => { startPlayerQuiz(e.target.getAttribute('data-id')); });
             });
         }
 
@@ -589,24 +491,16 @@
             currentQuizId = quizId;
             document.getElementById('playerQuizTitle').innerText = `ชุดข้อสอบ: ${globalQuizzes[quizId].examName}`;
             
-            // สร้างเซสชันคำตอบใหม่ของผู้เข้าสอบส่งขึ้นเซิร์ฟเวอร์ฐานข้อมูล
             const sRef = push(ref(database, 'player_sessions'));
             currentSessionId = sRef.key;
             
-            set(sRef, {
-                playerName: currentPlayerName,
-                quizId: quizId,
-                totalScore: 0,
-                answers: {}
-            });
+            set(sRef, { playerName: currentPlayerName, quizId: quizId, totalScore: 0, answers: {} });
 
-            // ติดตามสถานะเซสชันของตนเอง
             onValue(ref(database, `player_sessions/${currentSessionId}`), (snap) => {
                 playerCurrentSessionData = snap.val() || {};
                 renderPlayerQuestions();
             });
 
-            // ดึงรายข้อย่อยของวิชานั้นมาใช้สอบ
             onValue(ref(database, `quizzes/${quizId}/questions`), (snap) => {
                 currentQuizQuestions = snap.val() || {};
                 renderPlayerQuestions();
@@ -621,7 +515,7 @@
             const qIds = Object.keys(currentQuizQuestions);
 
             if(qIds.length === 0) {
-                document.getElementById('pQuestionText').innerText = "แอดมินยังไม่ได้อัปโหลดข้อสอบย่อยในชุดนี้ครับ";
+                document.getElementById('pQuestionText').innerText = "ยังไม่มีข้อสอบย่อยในชุดนี้";
                 return;
             }
 
@@ -630,14 +524,13 @@
                 const node = document.createElement('div');
                 node.className = `question-node ${currentActiveQuestionId===qid?'active':''}`;
                 
-                // กำหนดโค้ดสีจุดสถานะตามคู่มือโน้ต (หน้า 3) [cite: 38, 39, 40]
                 let colorClass = ''; 
                 const playerAns = playerCurrentSessionData.answers ? playerCurrentSessionData.answers[qid] : undefined;
                 
                 if(!q.correctAnswer || q.correctAnswer.trim() === "") {
-                    colorClass = 'yellow'; // สีเหลือง = แอดมินยังไม่ได้กรอกเฉลย [cite: 40, 41]
+                    colorClass = 'yellow'; // สีเหลือง = แอดมินยังไม่ได้กรอกเฉลย
                 } else if(playerAns !== undefined) {
-                    colorClass = playerAns ? 'green' : 'red'; // เขียว = ถูก [cite: 38], แดง = ผิด [cite: 39]
+                    colorClass = playerAns ? 'green' : 'red'; // เขียว = ถูก, แดง = ผิด
                 }
 
                 node.innerHTML = `<span>ข้อที่ ${q.questionNumber}</span> <div class="status-dot ${colorClass}"></div>`;
@@ -653,46 +546,35 @@
         function loadPlayerQuestion(id, data) {
             currentActiveQuestionId = id;
             currentActiveQuestionNum = data.questionNumber;
-            document.getElementById('pQuestionTitle').innerText = `โจทย์ข้อที่ ${data.questionNumber} [cite: 22]`;
-            document.getElementById('pQuestionText').innerText = data.questionText[cite: 35];
+            document.getElementById('pQuestionTitle').innerText = `โจทย์ข้อที่ ${data.questionNumber}`;
+            document.getElementById('pQuestionText').innerText = data.questionText;
             
             const imgEl = document.getElementById('pQuestionImage');
             if(data.imageUrl && data.imageUrl.trim() !== "") {
-                imgEl.src = data.imageUrl;
-                imgEl.style.display = 'block';
+                imgEl.src = data.imageUrl; imgEl.style.display = 'block';
             } else {
                 imgEl.style.display = 'none';
             }
 
-            // คืนค่าที่ผู้สอบเคยพิมพ์ค้างไว้ (ถ้ามี)
             const oldAns = (playerCurrentSessionData.answers_raw && playerCurrentSessionData.answers_raw[id]) ? playerCurrentSessionData.answers_raw[id] : "";
             document.getElementById('playerAnswerInput').value = oldAns;
-
-            document.querySelectorAll('#playerQuestionNodes .question-node').forEach((n, idx) => {
-                n.classList.toggle('active', Object.keys(currentQuizQuestions)[idx] === id);
-            });
         }
 
-        // --- กลไกปุ่มตรวจคำตอบ Realtime ทันทีเมื่อผู้สอบกดส่ง ---
         document.getElementById('btnSubmitAnswer').addEventListener('click', () => {
             const playerInput = document.getElementById('playerAnswerInput').value.trim();
             if(!currentActiveQuestionId) return;
 
             const qData = currentQuizQuestions[currentActiveQuestionId];
-            
-            // หากแอดมินยังไม่กรอกเฉลย จะถือว่าไม่คิดคะแนน
             let isCorrect = false;
             if(qData.correctAnswer && qData.correctAnswer.trim() !== "") {
                 isCorrect = (playerInput.toLowerCase() === qData.correctAnswer.toLowerCase().trim());
             }
 
-            // อัปเดตคำตอบที่ผู้เล่นกรอกลงไป
             const answersUpdate = playerCurrentSessionData.answers || {};
             const rawAnswersUpdate = playerCurrentSessionData.answers_raw || {};
             answersUpdate[currentActiveQuestionId] = isCorrect;
             rawAnswersUpdate[currentActiveQuestionId] = playerInput;
 
-            // คำนวณคะแนนรวมรวมใหม่แบบ Realtime
             let newTotalScore = 0;
             Object.keys(currentQuizQuestions).forEach(qid => {
                 if(answersUpdate[qid] === true) {
@@ -700,14 +582,9 @@
                 }
             });
 
-            // ส่งข้อมูลกลับขึ้นฐานข้อมูลออนไลน์ทันที
             update(ref(database, `player_sessions/${currentSessionId}`), {
-                answers: answersUpdate,
-                answers_raw: rawAnswersUpdate,
-                totalScore: newTotalScore
-            }).then(() => {
-                alert(`ส่งคำตอบข้อที่ ${currentActiveQuestionNum} เรียบร้อยแล้ว!`);
-            });
+                answers: answersUpdate, answers_raw: rawAnswersUpdate, totalScore: newTotalScore
+            }).then(() => { alert(`ส่งคำตอบข้อที่ ${currentActiveQuestionNum} สำเร็จ!`); });
         });
     </script>
 </body>
