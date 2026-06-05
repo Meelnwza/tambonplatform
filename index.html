@@ -45,20 +45,16 @@
         @media (max-width: 768px) { .manage-layout { grid-template-columns: 1fr; } }
         .sidebar { background: white; border: 1px solid var(--border-color); padding: 20px; border-radius: 12px; }
 
-        /* FIX 2: ลดความสูง question-node ให้กะทัดรัด */
         .question-node {
-            padding: 5px 10px;
-            margin-bottom: 5px;
-            border-radius: 6px;
+            padding: 12px;
+            margin-bottom: 8px;
+            border-radius: 8px;
             border: 1px solid var(--border-color);
             cursor: pointer;
             display: flex;
             justify-content: space-between;
             align-items: center;
             font-weight: 500;
-            font-size: 14px;
-            line-height: 1.2;
-            min-height: unset;
         }
         .question-node.active { background-color: #FFFDF9; border-color: var(--primary-yellow); }
         .question-node-left { display: flex; align-items: center; gap: 8px; }
@@ -746,16 +742,16 @@
                และใช้ CSS :not(:last-child) */
             .page {
                 width: 210mm;
-                min-height: 297mm;
                 padding: 18mm 20mm;
                 box-sizing: border-box;
                 display: flex;
                 flex-direction: column;
             }
-            /* เพิ่ม page break ก่อนทุกข้อ ยกเว้นข้อแรก */
-            .page + .page {
-                break-before: page;
-                page-break-before: always;
+            /* ทุกข้อต่อกันเลย ไม่ขึ้นหน้าใหม่ */
+            .page {
+                margin-bottom: 30px;
+                border-bottom: 2px dashed #E2E8F0;
+                padding-bottom: 30px;
             }
 
             .exam-title-box {
@@ -773,8 +769,7 @@
             .solution-answer { background: #DCFCE7; border: 1px solid #86EFAC; border-radius: 8px; padding: 10px 16px; font-size: 16px; font-weight: 700; color: #14532D; margin-bottom: 10px; }
             .solution-text { font-size: 15px; line-height: 1.8; white-space: pre-wrap; background: #F0FDF4; padding: 14px; border-radius: 8px; }
             @media print {
-                /* break-before แทน break-after ป้องกันหน้าเปล่าหลังข้อสุดท้าย */
-                .page + .page { break-before: page; page-break-before: always; }
+                .page { margin-bottom: 20px; }
             }
         </style></head><body>`;
     }
