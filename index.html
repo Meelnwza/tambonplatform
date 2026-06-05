@@ -8,13 +8,18 @@
     <script defer src="https://unpkg.com/mathlive"></script>
     <style>
         :root {
-            --bg-color: #FDFBF7; --primary-red: #D62828; --primary-yellow: #F4A261;
-            --accent-yellow: #E9C46A; --text-dark: #2B2D42; --card-bg: #FFFFFF; --border-color: #E2E8F0;
+            --bg-color: #FDFBF7;
+            --primary: #FF8C00;
+            --primary-dark: #FF5F00;
+            --primary-light: #FFD400;
+            --accent: #FFC300;
+            --text-dark: #2B2D42;
+            --card-bg: #FFFFFF;
+            --border-color: #E2E8F0;
         }
         * { box-sizing: border-box; }
         body { font-family: 'Sarabun', sans-serif; background-color: var(--bg-color); color: var(--text-dark); margin: 0; padding: 0; }
 
-        /* Background image overlay system */
         .view { position: relative; }
         #view-landing::before, #view-admin-login::before {
             content: '';
@@ -50,19 +55,18 @@
             z-index: -1;
         }
 
-        /* BG Settings Panel */
         #bgSettingsPanel { display:none; position:fixed; bottom:20px; right:20px; background:white; border-radius:16px; padding:20px; width:300px; box-shadow:0 8px 40px rgba(0,0,0,0.18); border:1px solid var(--border-color); z-index:5000; }
-        #bgSettingsPanel h4 { margin:0 0 14px; font-size:15px; color:var(--primary-red); }
+        #bgSettingsPanel h4 { margin:0 0 14px; font-size:15px; color:var(--primary-dark); }
         .bg-upload-row { margin-bottom:12px; }
         .bg-upload-row label { font-size:13px; font-weight:600; margin-bottom:4px; display:block; }
         .bg-upload-row input[type=file] { width:100%; font-size:12px; }
         .bg-upload-row .bg-preview { width:100%; height:60px; object-fit:cover; border-radius:6px; margin-top:6px; display:none; border:1px solid var(--border-color); }
-        #btnToggleBgPanel { position:fixed; bottom:20px; right:20px; background:var(--primary-red); color:white; border:none; border-radius:50%; width:60px; height:60px; padding:0; cursor:pointer; z-index:4999; box-shadow:0 4px 14px rgba(0,0,0,0.2); transition:0.2s; display:none; align-items:center; justify-content:center; }
-        #btnToggleBgPanel:hover { background:#B31F1F; }
+        #btnToggleBgPanel { position:fixed; bottom:20px; right:20px; background:var(--primary); color:white; border:none; border-radius:50%; width:60px; height:60px; padding:0; cursor:pointer; z-index:4999; box-shadow:0 4px 14px rgba(0,0,0,0.2); transition:0.2s; display:none; align-items:center; justify-content:center; }
+        #btnToggleBgPanel:hover { background:var(--primary-dark); }
         #btnToggleBgPanel svg { display:block; width:34px; height:34px; }
         .view { display: none; max-width: 1400px; margin: 0 auto; padding: 30px 20px; }
         .view.active { display: block; }
-        .brand-title { text-align: center; font-size: 32px; font-weight: 700; margin-bottom: 25px; color: var(--primary-red); border-bottom: 4px solid var(--primary-yellow); display: inline-block; padding-bottom: 5px; }
+        .brand-title { text-align: center; font-size: 32px; font-weight: 700; margin-bottom: 25px; color: var(--primary-dark); border-bottom: 4px solid var(--primary-light); display: inline-block; padding-bottom: 5px; }
         .center-wrapper { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 80vh; }
         .minimal-box { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 35px; width: 100%; max-width: 420px; box-shadow: 0 4px 20px rgba(0,0,0,0.02); }
         .form-group { margin-bottom: 18px; }
@@ -71,21 +75,34 @@
             width: 100%; padding: 12px; font-family: 'Sarabun', sans-serif;
             border: 1px solid var(--border-color); border-radius: 8px; background-color: #FCFCFA; transition: all 0.2s;
         }
-        input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary-red); background-color: #FFF; }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary); background-color: #FFF; }
         .tabs-container { display: flex; gap: 10px; margin: 20px 0; overflow-x: auto; padding-bottom: 5px; }
         .tab-btn { background: #F1F5F9; padding: 10px 20px; border-radius: 20px; cursor: pointer; font-weight: 500; font-size: 14px; white-space: nowrap; transition: 0.2s; }
-        .tab-btn.active { background: var(--primary-red); color: white; }
+        .tab-btn.active { background: var(--primary); color: white; }
         button { font-family: 'Sarabun', sans-serif; font-weight: 500; padding: 12px 24px; border: none; border-radius: 8px; cursor: pointer; transition: all 0.2s; }
-        .btn-primary { background-color: var(--primary-red); color: white; width: 100%; font-size: 16px; }
-        .btn-primary:hover { background-color: #B31F1F; }
-        .btn-secondary { background-color: var(--accent-yellow); color: var(--text-dark); }
-        .btn-secondary:hover { background-color: #DFBA5C; }
+        .btn-primary { background-color: var(--primary-dark); color: white; width: 100%; font-size: 16px; }
+        .btn-primary:hover { background-color: #CC4C00; }
+        .btn-secondary { background-color: var(--accent); color: var(--text-dark); }
+        .btn-secondary:hover { background-color: var(--primary-light); }
         .btn-link { background: none; color: #64748B; text-decoration: underline; margin-top: 15px; font-size: 14px; }
-        .quiz-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; margin-top: 25px; }
+
+        /* QUIZ GRID - square cards */
+        .quiz-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 20px;
+            margin-top: 25px;
+        }
         @media (max-width: 1200px) { .quiz-grid { grid-template-columns: repeat(3, 1fr); } }
         @media (max-width: 900px) { .quiz-grid { grid-template-columns: repeat(2, 1fr); } }
         @media (max-width: 600px) { .quiz-grid { grid-template-columns: 1fr; } }
-        .quiz-card { background: white; border: 1px solid var(--border-color); border-top: 5px solid var(--primary-red); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; justify-content: space-between; position: relative; }
+
+        /* Admin quiz grid - square aspect-ratio cards */
+        #adminQuizGrid .quiz-card {
+            aspect-ratio: 1 / 1;
+        }
+
+        .quiz-card { background: white; border: 1px solid var(--border-color); border-top: 5px solid var(--primary); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; justify-content: space-between; position: relative; }
         .btn-delete-quiz { position: absolute; top: -10px; right: -10px; width: 28px; height: 28px; border-radius: 50%; background: #EF4444; color: white; font-size: 14px; font-weight: bold; border: 2px solid white; padding: 0; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,0.2); z-index: 10; }
         .btn-delete-quiz:hover { background: #DC2626; }
         .manage-layout { display: grid; grid-template-columns: 280px 1fr; gap: 30px; margin-top: 20px; }
@@ -103,7 +120,7 @@
             align-items: center;
             font-weight: 500;
         }
-        .question-node.active { background-color: #FFFDF9; border-color: var(--primary-yellow); }
+        .question-node.active { background-color: #FFFBF0; border-color: var(--accent); }
         .question-node-left { display: flex; align-items: center; gap: 8px; }
         .btn-delete-q { width: 20px; height: 20px; border-radius: 50%; background: #EF4444; color: white; font-size: 10px; font-weight: bold; border: none; padding: 0; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; }
         .btn-delete-q:hover { background: #DC2626; }
@@ -111,13 +128,13 @@
         .status-dot.green { background-color: #22C55E; }
         .status-dot.red { background-color: #EF4444; }
         .status-dot.yellow { background-color: #EAB308; }
-        .score-box { margin-top: 15px; background: #FFFBFB; border-radius: 8px; padding: 12px; font-size: 13px; border: 1px dashed #FED7D7; }
+        .score-box { margin-top: 15px; background: #FFFBF0; border-radius: 8px; padding: 12px; font-size: 13px; border: 1px dashed #FFC300; }
         .quiz-img { max-width: 100%; max-height: 200px; object-fit: contain; border-radius: 6px; margin-bottom: 15px; display: block; }
         .answer-score-row { display: flex; justify-content: flex-end; align-items: center; gap: 8px; margin-bottom: 12px; }
         .answer-score-row label { margin: 0; font-size: 13px; font-weight: 600; }
         .answer-score-row input { width: 70px; padding: 6px 10px; font-size: 14px; text-align: center; }
         math-field { display: block; width: 100%; min-height: 56px; font-size: 22px; padding: 10px 14px; border: 2px solid var(--border-color); border-radius: 8px; background: #FCFCFA; box-sizing: border-box; }
-        math-field:focus-within { border-color: var(--primary-red); background: #fff; outline: none; }
+        math-field:focus-within { border-color: var(--primary); background: #fff; outline: none; }
         .math-kb { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; background: #F1F5F9; padding: 12px; border-radius: 10px; }
         .kb-btn { padding: 8px 14px; background: white; border: 1px solid #CBD5E1; border-radius: 7px; cursor: pointer; font-size: 17px; font-family: 'Sarabun', sans-serif; transition: background 0.15s; }
         .kb-btn:hover { background: #E2E8F0; }
@@ -132,13 +149,13 @@
         .score-table td.name-cell { text-align:left; font-weight:500; white-space:nowrap; }
         .td-correct { background:#DCFCE7; color:#166534; font-weight:700; }
         .td-wrong { background:#F1F5F9; color:#94A3B8; }
-        .td-total { background:#FEF3C7; font-weight:700; }
+        .td-total { background:#FFF3CD; font-weight:700; }
         .img-upload-area { border: 2px dashed var(--border-color); border-radius: 10px; padding: 18px; text-align: center; background: #FAFAFA; cursor: pointer; transition: all 0.2s; margin-bottom: 8px; }
-        .img-upload-area:hover { border-color: var(--primary-red); background: #FFF5F5; }
+        .img-upload-area:hover { border-color: var(--primary); background: #FFF8F0; }
         .img-upload-area input[type="file"] { display: none; }
         .img-preview { max-width: 100%; max-height: 180px; object-fit: contain; border-radius: 8px; margin-top: 10px; display: none; }
         .img-upload-label { font-size: 14px; color: #64748B; }
-        .img-upload-label span { color: var(--primary-red); font-weight: 600; cursor: pointer; }
+        .img-upload-label span { color: var(--primary-dark); font-weight: 600; cursor: pointer; }
         .img-clear-btn { background: #EF4444; color: white; border: none; border-radius: 6px; padding: 5px 12px; font-size: 12px; cursor: pointer; margin-top: 6px; font-family: 'Sarabun', sans-serif; display: none; }
         .btn-toggle-answers { background: #6366F1; color: white; font-size: 13px; padding: 7px 14px; border-radius: 8px; border: none; cursor: pointer; font-family: 'Sarabun', sans-serif; transition: 0.2s; }
         .btn-toggle-answers.show-raw { background: #0891B2; }
@@ -155,9 +172,92 @@
         .btn-pdf-ans:hover { background: #6D28D9; }
         .solution-box { background: #F0FDF4; border: 2px solid #86EFAC; border-radius: 12px; padding: 20px; margin-top: 20px; }
         .solution-box-title { font-weight: 700; color: #166534; font-size: 15px; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+
+        /* ===== BUTTON POP EFFECT ===== */
+        button:not(.btn-delete-quiz):not(.btn-delete-q):not(.kb-btn):not(.img-clear-btn):not(#btnToggleBgPanel) {
+            transition: transform 0.15s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.15s ease, background-color 0.2s;
+        }
+        button:not(.btn-delete-quiz):not(.btn-delete-q):not(.kb-btn):not(.img-clear-btn):not(#btnToggleBgPanel):hover {
+            transform: scale(1.06);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+        button:not(.btn-delete-quiz):not(.btn-delete-q):not(.kb-btn):not(.img-clear-btn):not(#btnToggleBgPanel):active {
+            transform: scale(0.97);
+        }
+        .kb-btn { transition: transform 0.12s cubic-bezier(0.34,1.56,0.64,1), background 0.15s; }
+        .kb-btn:hover { transform: scale(1.12); background: #E2E8F0; }
+        .kb-btn:active { transform: scale(0.95); }
+        .tab-btn { transition: transform 0.15s cubic-bezier(0.34,1.56,0.64,1), background 0.2s; }
+        .tab-btn:hover { transform: scale(1.07); }
+
+        /* ===== IMAGE ZOOM OVERLAY ===== */
+        .img-zoomable { cursor: zoom-in; position: relative; }
+        .img-zoomable::after {
+            content: '🔍';
+            position: absolute;
+            bottom: 8px; right: 8px;
+            background: rgba(0,0,0,0.55);
+            color: white;
+            border-radius: 6px;
+            padding: 3px 8px;
+            font-size: 14px;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        .img-zoomable:hover::after { opacity: 1; }
+        #imgZoomOverlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.82);
+            z-index: 9000;
+            align-items: center;
+            justify-content: center;
+            cursor: zoom-out;
+        }
+        #imgZoomOverlay.active { display: flex; }
+        #imgZoomOverlay img {
+            max-width: 90vw;
+            max-height: 90vh;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            animation: zoomIn 0.22s cubic-bezier(0.34,1.56,0.64,1);
+        }
+        @keyframes zoomIn { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        #imgZoomClose {
+            position: fixed; top: 20px; right: 24px;
+            background: rgba(255,255,255,0.15); color: white;
+            border: 2px solid rgba(255,255,255,0.4);
+            border-radius: 50%; width: 44px; height: 44px;
+            font-size: 22px; cursor: pointer; display: flex;
+            align-items: center; justify-content: center;
+            backdrop-filter: blur(4px);
+            transition: background 0.2s, transform 0.15s;
+        }
+        #imgZoomClose:hover { background: rgba(255,255,255,0.3); transform: scale(1.1); }
+
+        /* ===== SCORE TABLE NAME CELL HOVER/DELETE ===== */
+        .name-cell { cursor: pointer; }
+        .name-cell:hover { text-decoration: underline; color: var(--primary-dark); }
+
+        /* ===== CLEAR SCORES BUTTON ===== */
+        #btnClearAllScores {
+            background: #EF4444; color: white;
+            border: none; border-radius: 8px;
+            padding: 7px 14px; font-size: 13px;
+            cursor: pointer; font-family: 'Sarabun', sans-serif;
+        }
+        #btnClearAllScores:hover { background: #DC2626; }
     </style>
 </head>
 <body>
+
+<!-- IMAGE ZOOM OVERLAY -->
+<div id="imgZoomOverlay" onclick="closeImgZoom()">
+    <button id="imgZoomClose" onclick="closeImgZoom()">✕</button>
+    <img id="imgZoomTarget" src="" alt="ขยายรูป">
+</div>
 
 <!-- CONFIRM MODAL -->
 <div id="confirmModal" class="modal-overlay" style="display:none;">
@@ -175,9 +275,10 @@
 <div id="scoreTableModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:3000; align-items:flex-start; justify-content:center; padding-top:30px; overflow-y:auto;">
     <div style="background:white; border-radius:16px; padding:25px; width:95vw; max-width:960px; max-height:85vh; overflow-y:auto; box-shadow:0 20px 60px rgba(0,0,0,0.3);">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; flex-wrap:wrap; gap:10px;">
-            <h3 id="scoreTableTitle" style="margin:0; color:var(--primary-red);">📊 คะแนนนักเรียน</h3>
+            <h3 id="scoreTableTitle" style="margin:0; color:var(--primary-dark);">📊 คะแนนนักเรียน</h3>
             <div style="display:flex; gap:8px; align-items:center;">
                 <button id="btnToggleAnswers" class="btn-toggle-answers">👁 ดูคำตอบที่กรอก</button>
+                <button id="btnClearAllScores">🗑 ล้างรายชื่อทั้งหมด</button>
                 <button id="btnSortName" style="background:#EEF2F8; border:1px solid #CBD5E1; color:#374151; padding:7px 14px; border-radius:8px; font-size:13px; cursor:pointer; font-family:'Sarabun',sans-serif;">เรียงตามชื่อ ▲</button>
                 <button id="btnSortScore" style="background:#EEF2F8; border:1px solid #CBD5E1; color:#374151; padding:7px 14px; border-radius:8px; font-size:13px; cursor:pointer; font-family:'Sarabun',sans-serif;">เรียงตามคะแนน</button>
                 <button id="btnCloseScoreTable" style="background:#EF4444;color:white;border:none;border-radius:8px;padding:7px 16px;cursor:pointer;font-size:15px;font-family:'Sarabun',sans-serif;">✕ ปิด</button>
@@ -191,15 +292,15 @@
 <div id="view-landing" class="view active">
     <div class="center-wrapper">
         <div class="minimal-box">
-            <div style="text-align:center; margin-bottom:20px; padding-bottom:16px; border-bottom:3px solid var(--primary-yellow);">
-                <div style="font-size:26px; font-weight:700; color:var(--primary-red); letter-spacing:-0.5px;">Quiz Tambon Platform</div>
+            <div style="text-align:center; margin-bottom:20px; padding-bottom:16px; border-bottom:3px solid var(--primary-light);">
+                <div style="font-size:26px; font-weight:700; color:var(--primary-dark); letter-spacing:-0.5px;">Quiz Tambon Platform</div>
             </div>
             <h3 style="margin-top:0;">👤 ผู้เล่น (Players)</h3>
             <div class="form-group">
                 <label>ชื่อ - นามสกุล / ชื่อเล่น :</label>
                 <input type="text" id="playerNameInput" placeholder="กรอกชื่อเพื่อเข้าทำข้อสอบ...">
             </div>
-            <button class="btn-primary" id="btnPlayerLogin" style="background-color: var(--primary-yellow); color: #2B2D42; font-weight: bold;">Enter เข้าสู่ระบบ</button>
+            <button class="btn-primary" id="btnPlayerLogin" style="background-color: var(--primary-light); color: #2B2D42; font-weight: bold;">Enter เข้าสู่ระบบ</button>
             <center><button class="btn-link" onclick="switchView('view-admin-login')">เข้าสู่ระบบในฐานะ Admin</button></center>
         </div>
     </div>
@@ -208,8 +309,8 @@
 <div id="view-admin-login" class="view">
     <div class="center-wrapper">
         <div class="minimal-box">
-            <div style="text-align:center; margin-bottom:20px; padding-bottom:16px; border-bottom:3px solid var(--primary-yellow);">
-                <div style="font-size:26px; font-weight:700; color:var(--primary-red); letter-spacing:-0.5px;">Admin Authentication</div>
+            <div style="text-align:center; margin-bottom:20px; padding-bottom:16px; border-bottom:3px solid var(--primary-light);">
+                <div style="font-size:26px; font-weight:700; color:var(--primary-dark); letter-spacing:-0.5px;">Admin Authentication</div>
             </div>
             <h3 style="margin-top:0;">🔒 ผู้ดูแลระบบ (Admin)</h3>
             <div class="form-group">
@@ -224,7 +325,7 @@
 
 <div id="view-player-dashboard" class="view">
     <div style="display:flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--border-color); padding-bottom: 15px;">
-        <h2>สวัสดีคุณ: <span id="displayPlayerName" style="color:var(--primary-red);"></span> 🔥</h2>
+        <h2>สวัสดีคุณ: <span id="displayPlayerName" style="color:var(--primary-dark);"></span> 🔥</h2>
         <button class="btn-secondary" onclick="switchView('view-landing')">ออกจากระบบ</button>
     </div>
     <h3>เลือกแท็บวิชาที่ต้องการ:</h3>
@@ -247,16 +348,21 @@
         </div>
         <div style="background: white; border: 1px solid var(--border-color); padding: 30px; border-radius: 12px;">
             <h3 id="pQuestionTitle">ข้อสอบ</h3>
-            <img id="pQuestionImage" class="quiz-img" src="" alt="รูปภาพประกอบโจทย์" style="display:none;">
-            <p id="pQuestionText" style="font-size: 18px; line-height: 1.6; background: #FAF9F5; padding: 15px; border-radius: 8px; border-left: 4px solid var(--primary-yellow);"></p>
+            <img id="pQuestionImage" class="quiz-img img-zoomable" src="" alt="รูปภาพประกอบโจทย์" style="display:none;" onclick="openImgZoom(this.src)">
+            <p id="pQuestionText" style="font-size: 18px; line-height: 1.6; background: #FAF9F5; padding: 15px; border-radius: 8px; border-left: 4px solid var(--accent);"></p>
             <div class="form-group" style="margin-top: 20px;">
                 <label>พิมพ์คำตอบของคุณที่นี่:</label>
-                <math-field id="playerAnswerInput" style="border-color: var(--primary-yellow);"></math-field>
+                <math-field id="playerAnswerInput" style="border-color: var(--accent);"></math-field>
                 <div class="math-kb">
                     <button class="kb-btn" onclick="playerIns('\\frac{#@}{#?}')">a/b</button>
                     <button class="kb-btn" onclick="playerIns('\\sqrt{#@}')">√</button>
                     <button class="kb-btn" onclick="playerIns('\\sqrt[3]{#@}')">∛</button>
-                    <button class="kb-btn" onclick="playerIns('^{#?}')">xⁿ</button>
+                    <button class="kb-btn" onclick="playerIns('^{#?}')">x<sup>n</sup></button>
+                    <button class="kb-btn" onclick="playerIns('_{#?}')">x<sub>n</sub></button>
+                    <button class="kb-btn" onclick="playerIns('^{2}')">x²</button>
+                    <button class="kb-btn" onclick="playerIns('^{3}')">x³</button>
+                    <button class="kb-btn" onclick="playerIns('_{2}')">x₂</button>
+                    <button class="kb-btn" onclick="playerIns('_{3}')">x₃</button>
                     <button class="kb-btn" onclick="playerIns('\\pi')">π</button>
                     <button class="kb-btn" onclick="playerIns('\\alpha')">α</button>
                     <button class="kb-btn" onclick="playerIns('\\beta')">β</button>
@@ -270,7 +376,7 @@
                     <button class="kb-btn danger" onclick="document.getElementById('playerAnswerInput').value=''">ล้าง</button>
                 </div>
             </div>
-            <button class="btn-primary" id="btnSubmitAnswer" style="background-color: var(--primary-yellow); color: black; font-weight: bold;">ส่งคำตอบข้อนี้</button>
+            <button class="btn-primary" id="btnSubmitAnswer" style="background-color: var(--primary-light); color: black; font-weight: bold;">ส่งคำตอบข้อนี้</button>
         </div>
     </div>
 </div>
@@ -328,14 +434,14 @@
             <input type="hidden" id="adminCurrentQId">
             <div class="form-group">
                 <label>ลำดับข้อที่: <small style="color:#94A3B8;">(แก้ไขได้)</small></label>
-                <input type="number" id="adminQNum" min="1" style="background:#FFFDF9; border-color: var(--primary-yellow);">
+                <input type="number" id="adminQNum" min="1" style="background:#FFFDF9; border-color: var(--accent);">
             </div>
             <div class="form-group">
                 <label>รูปภาพประกอบคำถาม:</label>
                 <div class="img-upload-area" id="imgUploadArea" onclick="document.getElementById('adminQImageFile').click()">
                     <input type="file" id="adminQImageFile" accept="image/*">
                     <div class="img-upload-label">📷 <span>แตะที่นี่เพื่ออัพโหลดรูปจากแกลอรี่</span><br><small style="color:#94A3B8;">รองรับ JPG, PNG, GIF</small></div>
-                    <img id="adminQImagePreview" class="img-preview" alt="ตัวอย่างรูป">
+                    <img id="adminQImagePreview" class="img-preview img-zoomable" alt="ตัวอย่างรูป" onclick="openImgZoom(this.src)">
                     <button class="img-clear-btn" id="btnClearImage" onclick="clearAdminImage(event)">✕ ลบรูป</button>
                 </div>
                 <input type="hidden" id="adminQImageData">
@@ -349,6 +455,12 @@
                         <button class="kb-btn" onclick="insertIntoTextarea('adminQText','√')">√</button>
                         <button class="kb-btn" onclick="insertIntoTextarea('adminQText','²')">x²</button>
                         <button class="kb-btn" onclick="insertIntoTextarea('adminQText','³')">x³</button>
+                        <button class="kb-btn" onclick="insertIntoTextarea('adminQText','⁴')">x⁴</button>
+                        <button class="kb-btn" onclick="insertIntoTextarea('adminQText','⁻¹')">x⁻¹</button>
+                        <button class="kb-btn" onclick="insertIntoTextarea('adminQText','₀')">x₀</button>
+                        <button class="kb-btn" onclick="insertIntoTextarea('adminQText','₁')">x₁</button>
+                        <button class="kb-btn" onclick="insertIntoTextarea('adminQText','₂')">x₂</button>
+                        <button class="kb-btn" onclick="insertIntoTextarea('adminQText','₃')">x₃</button>
                         <button class="kb-btn" onclick="insertIntoTextarea('adminQText','π')">π</button>
                         <button class="kb-btn" onclick="insertIntoTextarea('adminQText','α')">α</button>
                         <button class="kb-btn" onclick="insertIntoTextarea('adminQText','β')">β</button>
@@ -381,7 +493,12 @@
                         <button class="kb-btn" onclick="adminIns('\\frac{#@}{#?}')">a/b</button>
                         <button class="kb-btn" onclick="adminIns('\\sqrt{#@}')">√</button>
                         <button class="kb-btn" onclick="adminIns('\\sqrt[3]{#@}')">∛</button>
-                        <button class="kb-btn" onclick="adminIns('^{#?}')">xⁿ</button>
+                        <button class="kb-btn" onclick="adminIns('^{#?}')">x<sup>n</sup></button>
+                        <button class="kb-btn" onclick="adminIns('_{#?}')">x<sub>n</sub></button>
+                        <button class="kb-btn" onclick="adminIns('^{2}')">x²</button>
+                        <button class="kb-btn" onclick="adminIns('^{3}')">x³</button>
+                        <button class="kb-btn" onclick="adminIns('_{2}')">x₂</button>
+                        <button class="kb-btn" onclick="adminIns('_{3}')">x₃</button>
                         <button class="kb-btn" onclick="adminIns('\\pi')">π</button>
                         <button class="kb-btn" onclick="adminIns('\\alpha')">α</button>
                         <button class="kb-btn" onclick="adminIns('\\beta')">β</button>
@@ -405,6 +522,12 @@
                         <button class="kb-btn" onclick="insertIntoTextarea('adminQSolution','√')">√</button>
                         <button class="kb-btn" onclick="insertIntoTextarea('adminQSolution','²')">x²</button>
                         <button class="kb-btn" onclick="insertIntoTextarea('adminQSolution','³')">x³</button>
+                        <button class="kb-btn" onclick="insertIntoTextarea('adminQSolution','⁴')">x⁴</button>
+                        <button class="kb-btn" onclick="insertIntoTextarea('adminQSolution','⁻¹')">x⁻¹</button>
+                        <button class="kb-btn" onclick="insertIntoTextarea('adminQSolution','₀')">x₀</button>
+                        <button class="kb-btn" onclick="insertIntoTextarea('adminQSolution','₁')">x₁</button>
+                        <button class="kb-btn" onclick="insertIntoTextarea('adminQSolution','₂')">x₂</button>
+                        <button class="kb-btn" onclick="insertIntoTextarea('adminQSolution','₃')">x₃</button>
                         <button class="kb-btn" onclick="insertIntoTextarea('adminQSolution','π')">π</button>
                         <button class="kb-btn" onclick="insertIntoTextarea('adminQSolution','α')">α</button>
                         <button class="kb-btn" onclick="insertIntoTextarea('adminQSolution','β')">β</button>
@@ -433,7 +556,7 @@
     </div>
 </div>
 
-<!-- BG SETTINGS PANEL — accessible from any page -->
+<!-- BG SETTINGS PANEL -->
 <button id="btnToggleBgPanel" title="ตั้งค่าพื้นหลัง">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
 </button>
@@ -460,26 +583,52 @@
         <img id="bgAdminPreview" class="bg-preview">
         <button onclick="clearBg('admin')" style="font-size:11px;padding:3px 8px;margin-top:4px;background:#EF4444;color:white;border:none;border-radius:4px;cursor:pointer;font-family:'Sarabun',sans-serif;display:none;" id="bgAdminClear">ลบรูป</button>
     </div>
-    <button onclick="applyBgSettings()" style="width:100%;background:var(--primary-red);color:white;border:none;border-radius:8px;padding:11px;font-size:15px;cursor:pointer;font-family:'Sarabun',sans-serif;font-weight:600;margin-top:8px;">✅ ยืนยันเปลี่ยนพื้นหลัง</button>
+    <button onclick="applyBgSettings()" style="width:100%;background:var(--primary-dark);color:white;border:none;border-radius:8px;padding:11px;font-size:15px;cursor:pointer;font-family:'Sarabun',sans-serif;font-weight:600;margin-top:8px;">✅ ยืนยันเปลี่ยนพื้นหลัง</button>
 </div>
 
 <script>
-    // BG Settings — 3 zones, accessible from any page
+    // ============================================================
+    // BG Settings — persisted via localStorage, applied on load
+    // ============================================================
     const bgData = { login: null, player: null, admin: null };
     const bgKeys = { login: '--bg-login', player: '--bg-player', admin: '--bg-admin' };
     const bgStorageKeys = { login: 'quizBg_login', player: 'quizBg_player', admin: 'quizBg_admin' };
 
+    // Apply a saved bg URL string to the CSS variable immediately
+    function applyBgVar(type, dataUrl) {
+        document.documentElement.style.setProperty(bgKeys[type], `url('${dataUrl}')`);
+    }
+    function removeBgVar(type) {
+        document.documentElement.style.removeProperty(bgKeys[type]);
+    }
+
+    // Restore all saved backgrounds immediately on page load (before any view switch)
+    ;['login','player','admin'].forEach(type => {
+        try {
+            const saved = localStorage.getItem(bgStorageKeys[type]);
+            if (saved) {
+                applyBgVar(type, saved);
+                bgData[type] = saved;
+                const cap = type.charAt(0).toUpperCase() + type.slice(1);
+                const preview = document.getElementById('bg' + cap + 'Preview');
+                if (preview) { preview.src = saved; preview.style.display = 'block'; }
+                const clearBtn = document.getElementById('bg' + cap + 'Clear');
+                if (clearBtn) clearBtn.style.display = 'inline-block';
+            }
+        } catch(e) {}
+    });
+
     function setupBgFile(type) {
         const cap = type.charAt(0).toUpperCase() + type.slice(1);
-        document.getElementById(`bg${cap}File`).addEventListener('change', function(e) {
+        document.getElementById('bg' + cap + 'File').addEventListener('change', function(e) {
             const file = e.target.files[0];
-            if(!file) return;
+            if (!file) return;
             const reader = new FileReader();
             reader.onload = function(ev) {
                 bgData[type] = ev.target.result;
-                const preview = document.getElementById(`bg${cap}Preview`);
+                const preview = document.getElementById('bg' + cap + 'Preview');
                 preview.src = ev.target.result; preview.style.display = 'block';
-                document.getElementById(`bg${cap}Clear`).style.display = 'inline-block';
+                document.getElementById('bg' + cap + 'Clear').style.display = 'inline-block';
             };
             reader.readAsDataURL(file);
         });
@@ -489,38 +638,27 @@
     window.clearBg = function(type) {
         const cap = type.charAt(0).toUpperCase() + type.slice(1);
         bgData[type] = null;
-        document.getElementById(`bg${cap}Preview`).style.display = 'none';
-        document.getElementById(`bg${cap}Preview`).src = '';
-        document.getElementById(`bg${cap}File`).value = '';
-        document.getElementById(`bg${cap}Clear`).style.display = 'none';
-        document.documentElement.style.removeProperty(bgKeys[type]);
-        localStorage.removeItem(bgStorageKeys[type]);
+        document.getElementById('bg' + cap + 'Preview').style.display = 'none';
+        document.getElementById('bg' + cap + 'Preview').src = '';
+        document.getElementById('bg' + cap + 'File').value = '';
+        document.getElementById('bg' + cap + 'Clear').style.display = 'none';
+        removeBgVar(type);
+        try { localStorage.removeItem(bgStorageKeys[type]); } catch(e) {}
     };
 
     window.applyBgSettings = function() {
         let changed = false;
         ['login','player','admin'].forEach(type => {
-            if(bgData[type]) {
-                document.documentElement.style.setProperty(bgKeys[type], `url('${bgData[type]}')`);
-                localStorage.setItem(bgStorageKeys[type], bgData[type]);
+            if (bgData[type]) {
+                applyBgVar(type, bgData[type]);
+                try { localStorage.setItem(bgStorageKeys[type], bgData[type]); } catch(e) {
+                    alert('พื้นที่จัดเก็บเต็ม กรุณาลดขนาดรูปภาพ');
+                }
                 changed = true;
             }
         });
         alert(changed ? 'เปลี่ยนพื้นหลังสำเร็จ! ✅' : 'กรุณาเลือกรูปภาพอย่างน้อย 1 ช่องก่อนครับ');
     };
-
-    // Restore saved backgrounds on load
-    ['login','player','admin'].forEach(type => {
-        const saved = localStorage.getItem(bgStorageKeys[type]);
-        if(saved) {
-            const cap = type.charAt(0).toUpperCase() + type.slice(1);
-            document.documentElement.style.setProperty(bgKeys[type], `url('${saved}')`);
-            bgData[type] = saved;
-            const preview = document.getElementById(`bg${cap}Preview`);
-            preview.src = saved; preview.style.display = 'block';
-            document.getElementById(`bg${cap}Clear`).style.display = 'inline-block';
-        }
-    });
 
     document.getElementById('btnToggleBgPanel').addEventListener('click', function() {
         document.getElementById('bgSettingsPanel').style.display = 'block';
@@ -552,11 +690,9 @@
     window.switchView = function(viewId) {
         document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
         document.getElementById(viewId).classList.add('active');
-        // Show bg panel button only for admin views
         const isAdmin = ADMIN_VIEWS.includes(viewId);
         const btn = document.getElementById('btnToggleBgPanel');
-        if(!isAdmin) {
-            // Hide both button and panel when leaving admin
+        if (!isAdmin) {
             btn.style.display = 'none';
             document.getElementById('bgSettingsPanel').style.display = 'none';
         } else {
@@ -566,7 +702,7 @@
 
     window.insertIntoTextarea = function(elId, val) {
         const el = document.getElementById(elId);
-        if(!el) return;
+        if (!el) return;
         const start = el.selectionStart ?? el.value.length;
         const end = el.selectionEnd ?? el.value.length;
         el.value = el.value.substring(0, start) + val + el.value.substring(end);
@@ -577,7 +713,7 @@
 
     document.getElementById('adminQImageFile').addEventListener('change', function(e) {
         const file = e.target.files[0];
-        if(!file) return;
+        if (!file) return;
         const reader = new FileReader();
         reader.onload = function(ev) {
             const dataUrl = ev.target.result;
@@ -599,7 +735,7 @@
         document.querySelector('#imgUploadArea .img-upload-label').style.display = 'block';
     };
     function setAdminImagePreview(src) {
-        if(src && src.trim() !== '') {
+        if (src && src.trim() !== '') {
             document.getElementById('adminQImageData').value = src;
             const preview = document.getElementById('adminQImagePreview');
             preview.src = src; preview.style.display = 'block';
@@ -621,12 +757,12 @@
     });
     document.getElementById('confirmModalOk').addEventListener('click', () => {
         document.getElementById('confirmModal').style.display = 'none';
-        if(confirmCallback) confirmCallback(); confirmCallback = null;
+        if (confirmCallback) confirmCallback(); confirmCallback = null;
     });
 
     document.getElementById('btnPlayerLogin').addEventListener('click', () => {
         const name = document.getElementById('playerNameInput').value.trim();
-        if(!name) { alert('กรุณาระบุชื่อก่อนเข้าเรียนครับ'); return; }
+        if (!name) { alert('กรุณาระบุชื่อก่อนเข้าเรียนครับ'); return; }
         currentPlayerName = name;
         document.getElementById('displayPlayerName').innerText = name;
         document.getElementById('displayPlayerNameQuiz').innerText = name;
@@ -634,7 +770,7 @@
     });
     document.getElementById('btnAdminLogin').addEventListener('click', () => {
         const pass = document.getElementById('adminPassword').value;
-        if(pass === "tkit1") {
+        if (pass === "tkit1") {
             document.getElementById('adminPassword').value = "";
             switchView('view-admin-dashboard');
         } else { alert('รหัสผ่านไม่ถูกต้อง'); }
@@ -647,7 +783,7 @@
     onValue(ref(database, 'player_sessions'), (snapshot) => {
         globalScores = snapshot.val() || {};
         renderAdminDashboard();
-        if(currentScoreTableQuizId && document.getElementById('scoreTableModal').style.display !== 'none') {
+        if (currentScoreTableQuizId && document.getElementById('scoreTableModal').style.display !== 'none') {
             renderScoreTableBody(currentScoreTableQuizId);
         }
     });
@@ -656,7 +792,7 @@
         const name = document.getElementById('examNameInput').value.trim();
         const sub = document.getElementById('subjectSelect').value;
         const score = document.getElementById('scoreInput').value.trim();
-        if(!name) { alert('กรุณากรอกชื่อชุดข้อสอบ'); return; }
+        if (!name) { alert('กรุณากรอกชื่อชุดข้อสอบ'); return; }
         const newRef = push(ref(database, 'quizzes'));
         update(newRef, { examName: name, subject: sub, baseScorePerQuestion: score }).then(() => {
             alert('สร้างชุดข้อสอบสำเร็จ!');
@@ -668,7 +804,7 @@
         const container = document.getElementById('adminQuizGrid');
         container.innerHTML = '';
         const ids = Object.keys(globalQuizzes);
-        if(ids.length === 0) {
+        if (ids.length === 0) {
             container.innerHTML = '<p style="grid-column:span 5; text-align:center; color:#888;">คลังยังว่างเปล่า</p>'; return;
         }
         ids.forEach(id => {
@@ -687,7 +823,7 @@
                 <div style="margin-top:10px;">
                     <button class="btn-secondary ad-save" data-id="${id}" style="width:100%; padding:8px; margin-bottom:5px;">💾 บันทึกหัวข้อ</button>
                     <button class="btn-primary ad-manage" data-id="${id}" style="width:100%; padding:8px;">Enter จัดการโจทย์ ➔</button>
-                    <div class="score-box"><button class="btn-view-scores" data-id="${id}" style="width:100%;padding:9px;background:var(--primary-red);color:white;border-radius:6px;font-size:13px;border:none;cursor:pointer;font-family:'Sarabun',sans-serif;font-weight:600;">📊 ดูคะแนนนักเรียน</button></div>
+                    <div class="score-box"><button class="btn-view-scores" data-id="${id}" style="width:100%;padding:9px;background:var(--primary-dark);color:white;border-radius:6px;font-size:13px;border:none;cursor:pointer;font-family:'Sarabun',sans-serif;font-weight:600;">📊 ดูคะแนนนักเรียน</button></div>
                 </div>
             `;
             container.appendChild(card);
@@ -723,9 +859,9 @@
         scoreSortMode = "name";
         scoreShowRawAnswers = false;
         const toggleBtn = document.getElementById('btnToggleAnswers');
-        if(toggleBtn) { toggleBtn.textContent = '👁 ดูคำตอบที่กรอก'; toggleBtn.classList.remove('show-raw'); }
+        if (toggleBtn) { toggleBtn.textContent = '👁 ดูคำตอบที่กรอก'; toggleBtn.classList.remove('show-raw'); }
         const quizData = globalQuizzes[quizId];
-        if(!quizData) return;
+        if (!quizData) return;
         document.getElementById('scoreTableTitle').innerText = `📊 คะแนนนักเรียน — ${quizData.examName}`;
         updateSortButtons(); renderScoreTableBody(quizId);
         document.getElementById('scoreTableModal').style.display = 'flex';
@@ -733,11 +869,11 @@
     function updateSortButtons() {
         const btnName = document.getElementById('btnSortName');
         const btnScore = document.getElementById('btnSortScore');
-        if(scoreSortMode === 'name') {
-            btnName.style.background = '#D62828'; btnName.style.color = 'white'; btnName.textContent = 'เรียงตามชื่อ ▲';
+        if (scoreSortMode === 'name') {
+            btnName.style.background = 'var(--primary-dark)'; btnName.style.color = 'white'; btnName.textContent = 'เรียงตามชื่อ ▲';
             btnScore.style.background = '#EEF2F8'; btnScore.style.color = '#374151'; btnScore.textContent = 'เรียงตามคะแนน';
         } else {
-            btnScore.style.background = '#D62828'; btnScore.style.color = 'white'; btnScore.textContent = 'เรียงตามคะแนน ▼';
+            btnScore.style.background = 'var(--primary-dark)'; btnScore.style.color = 'white'; btnScore.textContent = 'เรียงตามคะแนน ▼';
             btnName.style.background = '#EEF2F8'; btnName.style.color = '#374151'; btnName.textContent = 'เรียงตามชื่อ';
         }
     }
@@ -745,26 +881,23 @@
 
     function renderScoreTableBody(quizId) {
         const quizData = globalQuizzes[quizId];
-        if(!quizData) return;
+        if (!quizData) return;
         const questions = quizData.questions
             ? Object.entries(quizData.questions).sort((a,b) => (a[1].questionNumber||0) - (b[1].questionNumber||0))
             : [];
-
-        // FEATURE 1: Merge same-name players — keep last session per name
         let rawSessions = Object.values(globalScores).filter(s => s.quizId === quizId);
         const mergedMap = {};
         rawSessions.forEach(s => {
             const name = (s.playerName || '').trim();
-            if(!mergedMap[name]) {
+            if (!mergedMap[name]) {
                 mergedMap[name] = s;
             } else {
-                // Merge: combine answers (latest per question), recalculate score
                 const existing = mergedMap[name];
                 const mergedAnswers = Object.assign({}, existing.answers || {}, s.answers || {});
                 const mergedRaw = Object.assign({}, existing.answers_raw || {}, s.answers_raw || {});
                 let newScore = 0;
                 Object.keys(mergedAnswers).forEach(qid => {
-                    if(mergedAnswers[qid] === true) {
+                    if (mergedAnswers[qid] === true) {
                         const qScore = quizData.questions?.[qid]?.score || 5;
                         newScore += parseInt(qScore);
                     }
@@ -773,14 +906,14 @@
             }
         });
         let sessions = Object.values(mergedMap);
-        if(scoreSortMode === 'name') sessions.sort((a,b) => (a.playerName||'').localeCompare(b.playerName||'', 'th'));
+        if (scoreSortMode === 'name') sessions.sort((a,b) => (a.playerName||'').localeCompare(b.playerName||'', 'th'));
         else sessions.sort((a,b) => (b.totalScore||0) - (a.totalScore||0));
 
         let thead = `<tr><th style="text-align:left;">ชื่อ</th><th class="td-total">คะแนนรวม</th>`;
         questions.forEach(([,q]) => { thead += `<th>ข้อ ${q.questionNumber}</th>`; });
         thead += `</tr>`;
         let tbody = '';
-        if(sessions.length === 0) {
+        if (sessions.length === 0) {
             tbody = `<tr><td colspan="${2+questions.length}" style="text-align:center;padding:20px;color:#999;">ยังไม่มีนักเรียนทำข้อสอบนี้</td></tr>`;
         } else {
             sessions.forEach(s => {
@@ -788,13 +921,11 @@
                 questions.forEach(([qid]) => {
                     const ans = s.answers ? s.answers[qid] : undefined;
                     const rawAns = s.answers_raw ? (s.answers_raw[qid] ?? '') : '';
-                    if(scoreShowRawAnswers) {
-                        // Show raw typed answer
+                    if (scoreShowRawAnswers) {
                         tbody += ans === true
                             ? `<td class="td-correct" title="ถูก">${rawAns !== '' ? rawAns : '✓'}</td>`
                             : `<td class="td-raw-answer">${rawAns !== '' ? rawAns : (ans === false ? '—' : '—')}</td>`;
                     } else {
-                        // Show color status
                         tbody += ans === true ? `<td class="td-correct">✓</td>` : `<td class="td-wrong">${ans === false ? '✗' : '—'}</td>`;
                     }
                 });
@@ -807,15 +938,15 @@
         scoreShowRawAnswers = !scoreShowRawAnswers;
         this.textContent = scoreShowRawAnswers ? '🎨 ดูสีสถานะ' : '👁 ดูคำตอบที่กรอก';
         this.classList.toggle('show-raw', scoreShowRawAnswers);
-        if(currentScoreTableQuizId) renderScoreTableBody(currentScoreTableQuizId);
+        if (currentScoreTableQuizId) renderScoreTableBody(currentScoreTableQuizId);
     });
     document.getElementById('btnSortName').addEventListener('click', () => {
         scoreSortMode = 'name'; updateSortButtons();
-        if(currentScoreTableQuizId) renderScoreTableBody(currentScoreTableQuizId);
+        if (currentScoreTableQuizId) renderScoreTableBody(currentScoreTableQuizId);
     });
     document.getElementById('btnSortScore').addEventListener('click', () => {
         scoreSortMode = 'score'; updateSortButtons();
-        if(currentScoreTableQuizId) renderScoreTableBody(currentScoreTableQuizId);
+        if (currentScoreTableQuizId) renderScoreTableBody(currentScoreTableQuizId);
     });
     document.getElementById('btnCloseScoreTable').addEventListener('click', () => {
         document.getElementById('scoreTableModal').style.display = 'none'; currentScoreTableQuizId = null;
@@ -826,7 +957,7 @@
         currentQuizId = quizId;
         currentActiveQuestionId = "";
         document.getElementById('adminEditingTitle').innerText = `จัดการชุด: ${globalQuizzes[quizId].examName}`;
-        if(currentQuizListener) currentQuizListener();
+        if (currentQuizListener) currentQuizListener();
         currentQuizListener = onValue(ref(database, `quizzes/${quizId}/questions`), (snap) => {
             currentQuizQuestions = snap.val() || {};
             renderAdminQuestionNodes();
@@ -853,14 +984,14 @@
                 <button class="btn-delete-q" data-qid="${qid}" title="ลบข้อนี้">×</button>
             `;
             node.addEventListener('click', (e) => {
-                if(e.target.classList.contains('btn-delete-q')) return;
+                if (e.target.classList.contains('btn-delete-q')) return;
                 selectAdminQuestion(qid, q);
             });
             node.querySelector('.btn-delete-q').addEventListener('click', (e) => {
                 e.stopPropagation();
                 showConfirm(`ลบข้อที่ ${q.questionNumber} ใช่ไหม?`, () => {
                     remove(ref(database, `quizzes/${currentQuizId}/questions/${qid}`)).then(() => {
-                        if(currentActiveQuestionId === qid) {
+                        if (currentActiveQuestionId === qid) {
                             currentActiveQuestionId = "";
                             document.getElementById('adminFormTitle').innerText = 'เลือกข้อสอบจากแผง';
                         }
@@ -869,8 +1000,8 @@
             });
             container.appendChild(node);
         });
-        if(qIds.length === 0) setupNewAdminQForm(1);
-        else if(!currentActiveQuestionId || !currentQuizQuestions[currentActiveQuestionId]) {
+        if (qIds.length === 0) setupNewAdminQForm(1);
+        else if (!currentActiveQuestionId || !currentQuizQuestions[currentActiveQuestionId]) {
             selectAdminQuestion(qIds[0], currentQuizQuestions[qIds[0]]);
         }
     }
@@ -904,7 +1035,7 @@
     document.getElementById('btnAdminAddNewQ').addEventListener('click', () => {
         const qIds = Object.keys(currentQuizQuestions);
         let maxNum = 0;
-        qIds.forEach(qid => { const n = parseInt(currentQuizQuestions[qid].questionNumber || 0); if(n > maxNum) maxNum = n; });
+        qIds.forEach(qid => { const n = parseInt(currentQuizQuestions[qid].questionNumber || 0); if (n > maxNum) maxNum = n; });
         setupNewAdminQForm(maxNum + 1);
     });
 
@@ -916,8 +1047,8 @@
         const ans = document.getElementById('adminQAnswer').value.trim();
         const scr = document.getElementById('adminQScore').value.trim();
         const sol = document.getElementById('adminQSolution').value.trim();
-        if(!text) { alert('กรุณาระบุเนื้อคำถามด้วยครับ'); return; }
-        if(!qid) qid = push(ref(database, `quizzes/${currentQuizId}/questions`)).key;
+        if (!text) { alert('กรุณาระบุเนื้อคำถามด้วยครับ'); return; }
+        if (!qid) qid = push(ref(database, `quizzes/${currentQuizId}/questions`)).key;
         set(ref(database, `quizzes/${currentQuizId}/questions/${qid}`), {
             questionNumber: num, imageData: imageData, imageUrl: '',
             questionText: text, correctAnswer: ans, score: scr, solution: sol
@@ -927,9 +1058,7 @@
         });
     });
 
-    // ========================
     // PDF helpers
-    // ========================
     function getSortedQIds() {
         return Object.keys(currentQuizQuestions).sort((a,b) =>
             (currentQuizQuestions[a].questionNumber||0) - (currentQuizQuestions[b].questionNumber||0)
@@ -941,65 +1070,32 @@
         <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600;700&display=swap" rel="stylesheet">
         <style>
             body { font-family: 'Sarabun', sans-serif; margin: 0; padding: 0; }
-
-            /* แต่ละข้อ = 1 หน้า A4 พอดี มีที่ว่างด้านล่างสำหรับทด */
-            .page {
-                width: 210mm;
-                min-height: 297mm;
-                padding: 12mm 20mm 10mm 20mm;
-                box-sizing: border-box;
-                display: flex;
-                flex-direction: column;
-                break-after: page;
-                page-break-after: always;
-            }
-            /* ข้อสุดท้ายไม่ต้องขึ้นหน้าใหม่ */
-            .page:last-child {
-                break-after: avoid;
-                page-break-after: avoid;
-            }
-
-            /* หัวข้อชุดข้อสอบ — ชิดซ้าย เล็ก แสดงแค่ข้อแรก */
-            .exam-title-box {
-                display: inline-flex;
-                align-items: center;
-                gap: 8px;
-                border: 2px solid #D62828;
-                border-radius: 8px;
-                padding: 7px 16px;
-                margin-bottom: 14px;
-                background: #FFF9F9;
-            }
-            .exam-title-box .title-text { font-size: 15px; font-weight: 700; color: #D62828; }
+            .page { width: 210mm; min-height: 297mm; padding: 12mm 20mm 10mm 20mm; box-sizing: border-box; display: flex; flex-direction: column; break-after: page; page-break-after: always; }
+            .page:last-child { break-after: avoid; page-break-after: avoid; }
+            .exam-title-box { display: inline-flex; align-items: center; gap: 8px; border: 2px solid #FF8C00; border-radius: 8px; padding: 7px 16px; margin-bottom: 14px; background: #FFF8F0; }
+            .exam-title-box .title-text { font-size: 15px; font-weight: 700; color: #FF5F00; }
             .exam-title-box .title-count { font-size: 13px; color: #888; margin-left: 6px; }
-
             .q-header { font-weight: 700; font-size: 20px; margin-bottom: 10px; display:flex; justify-content: space-between; align-items: center; }
-            .q-score-badge { background: #FEF3C7; border: 1px solid #F59E0B; padding: 4px 14px; border-radius: 20px; font-size: 15px; color: #92400E; font-weight: 700; }
+            .q-score-badge { background: #FFF3CD; border: 1px solid #FFC300; padding: 4px 14px; border-radius: 20px; font-size: 15px; color: #7a4f00; font-weight: 700; }
             .q-img { width: 100%; max-height: 300px; object-fit: contain; display: block; margin: 10px 0; border-radius: 8px; border: 1px solid #E2E8F0; }
-            .q-text { font-size: 17px; line-height: 1.8; white-space: pre-wrap; background: #FAF9F5; padding: 14px; border-radius: 8px; border-left: 5px solid #F4A261; }
-            /* พื้นที่ว่างสำหรับทดเลข — ยืดเต็มที่เหลือ */
+            .q-text { font-size: 17px; line-height: 1.8; white-space: pre-wrap; background: #FAF9F5; padding: 14px; border-radius: 8px; border-left: 5px solid #FFC300; }
             .answer-space { flex: 1; border: 1.5px dashed #CBD5E1; border-radius: 8px; margin-top: 14px; min-height: 60mm; }
-
             .solution-section { margin-top: 16px; border-top: 2px dashed #86EFAC; padding-top: 14px; }
             .solution-label { font-size: 15px; font-weight: 700; color: #166534; margin-bottom: 8px; }
             .solution-answer { background: #DCFCE7; border: 1px solid #86EFAC; border-radius: 8px; padding: 10px 16px; font-size: 16px; font-weight: 700; color: #14532D; margin-bottom: 10px; }
             .solution-text { font-size: 15px; line-height: 1.8; white-space: pre-wrap; background: #F0FDF4; padding: 14px; border-radius: 8px; }
-            @media print {
-                .page { break-after: page; page-break-after: always; }
-                .page:last-child { break-after: avoid; page-break-after: avoid; }
-            }
+            @media print { .page { break-after: page; page-break-after: always; } .page:last-child { break-after: avoid; page-break-after: avoid; } }
         </style></head><body>`;
     }
 
     document.getElementById('btnExportPDF').addEventListener('click', () => {
         const qIds = getSortedQIds();
-        if(qIds.length === 0) { alert('ไม่มีข้อสอบในชุดนี้'); return; }
+        if (qIds.length === 0) { alert('ไม่มีข้อสอบในชุดนี้'); return; }
         const quizName = globalQuizzes[currentQuizId]?.examName || "ข้อสอบ";
         let html = buildPdfHeader(quizName);
-        qIds.forEach((qid, idx) => {
+        qIds.forEach((qid) => {
             const q = currentQuizQuestions[qid];
             const imgSrc = q.imageData || q.imageUrl || '';
-            // หัวข้อแสดงทุกหน้า
             const titleHtml = `<div class="exam-title-box"><span class="title-text">Quiz Tambon Platform : ${quizName}</span><span class="title-count">(${qIds.length} ข้อ)</span></div>`;
             html += `<div class="page">
                 ${titleHtml}
@@ -1015,20 +1111,19 @@
         html += `</body></html>`;
         const blob = new Blob([html], { type: 'text/html' });
         const win = window.open(URL.createObjectURL(blob), '_blank');
-        if(win) setTimeout(() => win.print(), 1000);
+        if (win) setTimeout(() => win.print(), 1000);
     });
 
     document.getElementById('btnExportPDFAns').addEventListener('click', () => {
         const qIds = getSortedQIds();
-        if(qIds.length === 0) { alert('ไม่มีข้อสอบในชุดนี้'); return; }
+        if (qIds.length === 0) { alert('ไม่มีข้อสอบในชุดนี้'); return; }
         const quizName = globalQuizzes[currentQuizId]?.examName || "ข้อสอบ";
         let html = buildPdfHeader(quizName);
-        qIds.forEach((qid, idx) => {
+        qIds.forEach((qid) => {
             const q = currentQuizQuestions[qid];
             const imgSrc = q.imageData || q.imageUrl || '';
             const hasSol = q.solution && q.solution.trim() !== '';
             const hasAns = q.correctAnswer && q.correctAnswer.trim() !== '';
-            // หัวข้อแสดงทุกหน้า
             const titleHtml = `<div class="exam-title-box"><span class="title-text">Quiz Tambon Platform : ${quizName} — เฉลย</span><span class="title-count">(${qIds.length} ข้อ)</span></div>`;
             html += `<div class="page">
                 ${titleHtml}
@@ -1047,7 +1142,7 @@
         html += `</body></html>`;
         const blob = new Blob([html], { type: 'text/html' });
         const win = window.open(URL.createObjectURL(blob), '_blank');
-        if(win) setTimeout(() => win.print(), 1000);
+        if (win) setTimeout(() => win.print(), 1000);
     });
 
     // Player
@@ -1065,26 +1160,26 @@
     }
     function renderPlayerQuizzes() {
         const container = document.getElementById('playerQuizGrid');
-        if(!container) return;
+        if (!container) return;
         container.innerHTML = '';
         const ids = Object.keys(globalQuizzes);
         let count = 0;
         ids.forEach(id => {
             const data = globalQuizzes[id];
-            if(data.subject !== selectedSubjectFilter) return;
+            if (data.subject !== selectedSubjectFilter) return;
             count++;
             const card = document.createElement('div');
             card.className = 'quiz-card';
             card.innerHTML = `
                 <div>
-                    <h4 style="margin:0 0 10px 0; color:var(--primary-red);">${data.examName}</h4>
+                    <h4 style="margin:0 0 10px 0; color:var(--primary-dark);">${data.examName}</h4>
                     <p style="margin:5px 0; font-size:13px;">หมวดวิชา: <b>${data.subject}</b></p>
                 </div>
-                <button class="btn-primary start-quiz" data-id="${id}" style="margin-top:15px; font-size:14px; background-color:var(--primary-yellow); color:black;">Enter เข้าทำข้อสอบ ➔</button>
+                <button class="btn-primary start-quiz" data-id="${id}" style="margin-top:15px; font-size:14px; background-color:var(--primary-light); color:black;">Enter เข้าทำข้อสอบ ➔</button>
             `;
             container.appendChild(card);
         });
-        if(count === 0) container.innerHTML = `<p style="grid-column:span 5; text-align:center; color:#888;">ไม่มีวิชา ${selectedSubjectFilter} เปิดอยู่ในขณะนี้</p>`;
+        if (count === 0) container.innerHTML = `<p style="grid-column:span 5; text-align:center; color:#888;">ไม่มีวิชา ${selectedSubjectFilter} เปิดอยู่ในขณะนี้</p>`;
         container.querySelectorAll('.start-quiz').forEach(b => {
             b.addEventListener('click', (e) => { startPlayerQuiz(e.target.getAttribute('data-id')); });
         });
@@ -1112,15 +1207,15 @@
         const qIds = Object.keys(currentQuizQuestions).sort((a,b) =>
             (currentQuizQuestions[a].questionNumber||0) - (currentQuizQuestions[b].questionNumber||0)
         );
-        if(qIds.length === 0) { document.getElementById('pQuestionText').innerText = "ยังไม่มีข้อสอบย่อยในชุดนี้"; return; }
+        if (qIds.length === 0) { document.getElementById('pQuestionText').innerText = "ยังไม่มีข้อสอบย่อยในชุดนี้"; return; }
         qIds.forEach(qid => {
             const q = currentQuizQuestions[qid];
             const node = document.createElement('div');
             node.className = `question-node ${currentActiveQuestionId===qid?'active':''}`;
             let colorClass = '';
             const playerAns = playerCurrentSessionData.answers ? playerCurrentSessionData.answers[qid] : undefined;
-            if(!q.correctAnswer || q.correctAnswer.trim() === "") colorClass = 'yellow';
-            else if(playerAns !== undefined) colorClass = playerAns ? 'green' : 'red';
+            if (!q.correctAnswer || q.correctAnswer.trim() === "") colorClass = 'yellow';
+            else if (playerAns !== undefined) colorClass = playerAns ? 'green' : 'red';
             node.innerHTML = `<span>ข้อที่ ${q.questionNumber}</span> <div class="status-dot ${colorClass}"></div>`;
             node.addEventListener('click', () => {
                 currentActiveQuestionId = qid;
@@ -1129,7 +1224,7 @@
             });
             container.appendChild(node);
         });
-        if(!currentActiveQuestionId || !currentQuizQuestions[currentActiveQuestionId]) {
+        if (!currentActiveQuestionId || !currentQuizQuestions[currentActiveQuestionId]) {
             currentActiveQuestionId = qIds[0];
             loadPlayerQuestion(qIds[0], currentQuizQuestions[qIds[0]]);
         }
@@ -1141,17 +1236,17 @@
         document.getElementById('pQuestionText').innerText = data.questionText;
         const imgEl = document.getElementById('pQuestionImage');
         const imgSrc = data.imageData || data.imageUrl || '';
-        if(imgSrc.trim() !== "") { imgEl.src = imgSrc; imgEl.style.display = 'block'; }
+        if (imgSrc.trim() !== "") { imgEl.src = imgSrc; imgEl.style.display = 'block'; }
         else { imgEl.style.display = 'none'; }
         const oldAns = (playerCurrentSessionData.answers_raw && playerCurrentSessionData.answers_raw[id]) ? playerCurrentSessionData.answers_raw[id] : "";
         document.getElementById('playerAnswerInput').value = oldAns;
     }
     document.getElementById('btnSubmitAnswer').addEventListener('click', () => {
         const playerInput = document.getElementById('playerAnswerInput').value.trim();
-        if(!currentActiveQuestionId) return;
+        if (!currentActiveQuestionId) return;
         const qData = currentQuizQuestions[currentActiveQuestionId];
         let isCorrect = false;
-        if(qData.correctAnswer && qData.correctAnswer.trim() !== "") {
+        if (qData.correctAnswer && qData.correctAnswer.trim() !== "") {
             isCorrect = mathEquivalent(playerInput, qData.correctAnswer.trim());
         }
         const answersUpdate = playerCurrentSessionData.answers || {};
@@ -1160,119 +1255,153 @@
         rawAnswersUpdate[currentActiveQuestionId] = playerInput;
         let newTotalScore = 0;
         Object.keys(currentQuizQuestions).forEach(qid => {
-            if(answersUpdate[qid] === true) newTotalScore += parseInt(currentQuizQuestions[qid].score || 5);
+            if (answersUpdate[qid] === true) newTotalScore += parseInt(currentQuizQuestions[qid].score || 5);
         });
         update(ref(database, `player_sessions/${currentSessionId}`), {
             answers: answersUpdate, answers_raw: rawAnswersUpdate, totalScore: newTotalScore
         }).then(() => { alert(`ส่งคำตอบข้อที่ ${currentActiveQuestionNum} สำเร็จ!`); });
     });
 
-    // ===== MATH EQUIVALENCE CHECKER =====
-    // รองรับ: สลับที่บวก/คูณ, จัดกลุ่ม, เศษส่วน, ทศนิยม, LaTeX, กรณีตัวอักษร ก-ง
+    // ============================================================
+    // MATH EQUIVALENCE CHECKER — improved algebraic simplification
+    // ============================================================
     function mathEquivalent(input, correct) {
-        if(!input || !correct) return false;
+        if (!input || !correct) return false;
 
-        // 1. ตรวจสอบตรงๆ (case-insensitive) และ normalize spaces
+        // 1. Direct string match (normalized)
         const norm = s => s.trim().toLowerCase().replace(/\s+/g, '');
-        if(norm(input) === norm(correct)) return true;
+        if (norm(input) === norm(correct)) return true;
 
-        // 2. ลอง parse เป็นตัวเลขแล้วเปรียบเทียบ (รองรับเศษส่วน, ทศนิยม, LaTeX)
+        // 2. Try numeric parse (handles fractions, decimals, LaTeX constants)
         const numA = parseExpr(input);
         const numB = parseExpr(correct);
-        if(numA !== null && numB !== null) {
-            // เปรียบเทียบตัวเลข (tolerance สำหรับทศนิยม)
-            if(Math.abs(numA - numB) < 1e-9) return true;
+        if (numA !== null && numB !== null) {
+            if (Math.abs(numA - numB) < 1e-9) return true;
         }
 
-        // 3. ตรวจสอบนิพจน์พีชคณิต — สุ่มค่าตัวแปรหลายรอบแล้วเปรียบเทียบ (symbolic equiv)
+        // 3. Algebraic symbolic equivalence via multi-variable random sampling
         try {
-            if(symbolicEquivalent(input, correct)) return true;
+            if (symbolicEquivalent(input, correct)) return true;
         } catch(e) {}
 
         return false;
     }
 
-    // แปลงนิพจน์เป็นตัวเลข (รองรับ LaTeX เศษส่วน, ราก, π, ทศนิยม, จำนวนเต็ม)
+    // Convert LaTeX/math expression to JS-evaluable string
+    function latexToJS(s) {
+        return s.trim()
+            // LaTeX fractions: \frac{a}{b} → (a)/(b)
+            .replace(/\\frac\{([^}]+)\}\{([^}]+)\}/g, '($1)/($2)')
+            // Roots
+            .replace(/\\sqrt\[3\]\{([^}]+)\}/g, 'Math.cbrt($1)')
+            .replace(/\\sqrt\{([^}]+)\}/g, 'Math.sqrt($1)')
+            // Powers: x^{n} or x^n
+            .replace(/\^\{([^}]+)\}/g, '**($1)')
+            .replace(/\^([0-9.]+)/g, '**$1')
+            // Constants
+            .replace(/\\pi/g, 'Math.PI')
+            .replace(/\\infty/g, 'Infinity')
+            // Operators
+            .replace(/\\times/g, '*')
+            .replace(/\\cdot/g, '*')
+            .replace(/×/g, '*')
+            .replace(/÷/g, '/')
+            // Remove remaining LaTeX commands
+            .replace(/\\left|\\right/g, '')
+            .replace(/\\[a-zA-Z]+/g, '')
+            // Implicit multiplication: e.g. 2x → 2*x, xA → x*A (between letter+letter or digit+letter)
+            .replace(/([0-9])([A-Za-z])/g, '$1*$2')
+            .replace(/([A-Za-z])([0-9])/g, '$1*$2')
+            .replace(/([A-Za-z])\(/g, '$1*(')
+            .replace(/\)([A-Za-z0-9])/g, ')*$1');
+    }
+
+    // Extract variable names from a JS expression string (exclude Math builtins)
+    const MATH_BUILTINS = new Set(['Math','PI','sqrt','cbrt','pow','abs','sin','cos','tan','log','exp','E','Infinity','floor','ceil','round','max','min']);
+    function extractVars(jsExpr) {
+        const matches = [...jsExpr.matchAll(/\b([a-zA-Z_][a-zA-Z0-9_]*)\b/g)];
+        const vars = new Set();
+        matches.forEach(m => {
+            if (!MATH_BUILTINS.has(m[1])) vars.add(m[1]);
+        });
+        return [...vars];
+    }
+
     function parseExpr(s) {
         try {
-            // แปลง LaTeX → JS expression
-            let e = s.trim()
-                // LaTeX fractions: \frac{a}{b} → (a)/(b)
-                .replace(/\\frac\{([^}]+)\}\{([^}]+)\}/g, '($1)/($2)')
-                // Simple fractions: a/b
-                // Roots: \sqrt{x} → Math.sqrt(x)
-                .replace(/\\sqrt\{([^}]+)\}/g, 'Math.sqrt($1)')
-                .replace(/\\sqrt\[3\]\{([^}]+)\}/g, 'Math.cbrt($1)')
-                // Power: x^{n} → Math.pow(x,n)
-                .replace(/\^{\s*([^}]+)\s*\}/g, '**($1)')
-                .replace(/\^([0-9]+)/g, '**$1')
-                // Constants
-                .replace(/\\pi/g, 'Math.PI')
-                .replace(/\\infty/g, 'Infinity')
-                .replace(/×/g, '*')
-                .replace(/÷/g, '/')
-                // Remove remaining LaTeX backslash commands
-                .replace(/\\[a-zA-Z]+/g, '')
-                // Thai letters → keep as-is (won't parse as number)
-                ;
-            // ถ้ามีตัวอักษรที่ไม่ใช่ตัวเลข/Math ให้ return null
-            if(/[a-wyzA-WYZ]/.test(e.replace(/Math\.(PI|sqrt|cbrt|pow|abs|log|exp|sin|cos|tan)/g,''))) return null;
+            let e = latexToJS(s);
+            // If contains letters that aren't Math builtins, it's symbolic → can't evaluate numerically
+            const vars = extractVars(e);
+            if (vars.length > 0) return null;
             const result = Function('"use strict"; return (' + e + ')')();
             return (typeof result === 'number' && isFinite(result)) ? result : null;
         } catch(e) { return null; }
     }
 
-    // ตรวจสอบความเท่ากันเชิงสัญลักษณ์ด้วยการสุ่มค่าตัวแปร
+    // Symbolic equivalence: substitute multiple random test points and compare results
     function symbolicEquivalent(exprA, exprB) {
-        // แปลง LaTeX → JS
-        const toJS = s => s.trim()
-            .replace(/\\frac\{([^}]+)\}\{([^}]+)\}/g, '($1)/($2)')
-            .replace(/\\sqrt\{([^}]+)\}/g, 'Math.sqrt($1)')
-            .replace(/\\sqrt\[3\]\{([^}]+)\}/g, 'Math.cbrt($1)')
-            .replace(/\^{\s*([^}]+)\s*\}/g, '**($1)')
-            .replace(/\^([0-9.]+)/g, '**$1')
-            .replace(/\\pi/g, 'Math.PI')
-            .replace(/\\infty/g, 'Infinity')
-            .replace(/×/g, '*').replace(/÷/g, '/')
-            .replace(/\\cdot/g, '*')
-            .replace(/\\times/g, '*')
-            .replace(/\\left|\\right/g, '')
-            .replace(/\\[a-zA-Z]+/g, '');
+        const jsA = latexToJS(exprA);
+        const jsB = latexToJS(exprB);
 
-        const jsA = toJS(exprA);
-        const jsB = toJS(exprB);
+        // Collect all variable names from both expressions
+        const allVars = [...new Set([...extractVars(jsA), ...extractVars(jsB)])];
+        if (allVars.length === 0) return false; // No variables — handled by parseExpr
 
-        // หาตัวแปรในนิพจน์
-        const vars = [...new Set([...jsA.matchAll(/\b([a-zA-Z])\b/g), ...jsB.matchAll(/\b([a-zA-Z])\b/g)]
-            .map(m => m[1]).filter(v => !['Math','PI','sqrt','cbrt','pow','abs','sin','cos','tan','log','exp','E','Infinity'].includes(v)))];
-
-        if(vars.length === 0) return false; // ไม่มีตัวแปร ให้ parseExpr จัดการ
-
-        // สุ่มค่าตัวแปร 5 รอบ ถ้าผลลัพธ์ตรงกันทุกรอบ = equivalent
-        const testVals = [
-            { val: 2 }, { val: 3 }, { val: 0.5 }, { val: 7 }, { val: -1 }
+        // Use many diverse test points to reduce false positives
+        // For each test, assign the same value to all variables
+        const testPoints = [
+            [2], [3], [0.5], [7], [-1], [5], [0.1], [4],
+            // Also test with different values per variable
         ];
-        let allMatch = true;
-        for(const tv of testVals) {
+
+        // Multi-variable test: assign independent values to each variable
+        const multiVarTests = [
+            allVars.map((_, i) => [2.7, 3.1, 5.3, 1.7, 4.2, 0.8, 6.1, 2.3][i % 8]),
+            allVars.map((_, i) => [1.5, 2.9, 4.1, 0.7, 3.3, 7.2, 1.1, 5.6][i % 8]),
+            allVars.map((_, i) => [3.7, 1.3, 0.9, 5.1, 2.1, 4.9, 3.3, 0.4][i % 8]),
+        ];
+
+        let passCount = 0;
+        let totalTests = 0;
+
+        // Single-value tests (same value for all vars)
+        for (const [val] of testPoints) {
             try {
-                const assigns = vars.map(v => `let ${v}=${tv.val};`).join('');
+                const assigns = allVars.map(v => `var ${v}=${val};`).join('');
                 const rA = Function('"use strict";' + assigns + 'return (' + jsA + ')')();
                 const rB = Function('"use strict";' + assigns + 'return (' + jsB + ')')();
-                if(typeof rA !== 'number' || typeof rB !== 'number' || !isFinite(rA) || !isFinite(rB)) { allMatch = false; break; }
-                if(Math.abs(rA - rB) > 1e-6) { allMatch = false; break; }
-            } catch(e) { allMatch = false; break; }
+                if (typeof rA !== 'number' || typeof rB !== 'number') continue;
+                if (!isFinite(rA) || !isFinite(rB)) continue; // Skip division-by-zero test points
+                totalTests++;
+                if (Math.abs(rA - rB) <= 1e-6 * (1 + Math.abs(rA))) passCount++;
+            } catch(e) {}
         }
-        return allMatch && vars.length > 0;
+
+        // Multi-variable tests
+        for (const vals of multiVarTests) {
+            try {
+                const assigns = allVars.map((v, i) => `var ${v}=${vals[i]};`).join('');
+                const rA = Function('"use strict";' + assigns + 'return (' + jsA + ')')();
+                const rB = Function('"use strict";' + assigns + 'return (' + jsB + ')')();
+                if (typeof rA !== 'number' || typeof rB !== 'number') continue;
+                if (!isFinite(rA) || !isFinite(rB)) continue;
+                totalTests++;
+                if (Math.abs(rA - rB) <= 1e-6 * (1 + Math.abs(rA))) passCount++;
+            } catch(e) {}
+        }
+
+        // Require ALL valid tests to pass (not just most) to avoid false positives
+        return totalTests >= 3 && passCount === totalTests;
     }
-    // ===== END MATH EQUIVALENCE =====
+    // ============================================================
 
     window.playerIns = function(latex) {
         const mf = document.getElementById('playerAnswerInput');
-        if(mf) { mf.focus(); mf.executeCommand(['insert', latex]); }
+        if (mf) { mf.focus(); mf.executeCommand(['insert', latex]); }
     };
     window.adminIns = function(latex) {
         const mf = document.getElementById('adminQAnswer');
-        if(mf) { mf.focus(); mf.executeCommand(['insert', latex]); }
+        if (mf) { mf.focus(); mf.executeCommand(['insert', latex]); }
     };
 </script>
 </body>
