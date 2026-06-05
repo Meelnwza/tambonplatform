@@ -44,12 +44,27 @@
         .manage-layout { display: grid; grid-template-columns: 280px 1fr; gap: 30px; margin-top: 20px; }
         @media (max-width: 768px) { .manage-layout { grid-template-columns: 1fr; } }
         .sidebar { background: white; border: 1px solid var(--border-color); padding: 20px; border-radius: 12px; }
-        .question-node { padding: 12px; margin-bottom: 8px; border-radius: 8px; border: 1px solid var(--border-color); cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: 500; }
+
+        /* FIX 2: ลดความสูง question-node ให้กะทัดรัด */
+        .question-node {
+            padding: 5px 10px;
+            margin-bottom: 5px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 500;
+            font-size: 14px;
+            line-height: 1.2;
+            min-height: unset;
+        }
         .question-node.active { background-color: #FFFDF9; border-color: var(--primary-yellow); }
         .question-node-left { display: flex; align-items: center; gap: 8px; }
-        .btn-delete-q { width: 22px; height: 22px; border-radius: 50%; background: #EF4444; color: white; font-size: 11px; font-weight: bold; border: none; padding: 0; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; }
+        .btn-delete-q { width: 20px; height: 20px; border-radius: 50%; background: #EF4444; color: white; font-size: 10px; font-weight: bold; border: none; padding: 0; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; }
         .btn-delete-q:hover { background: #DC2626; }
-        .status-dot { width: 12px; height: 12px; border-radius: 50%; background-color: #CBD5E1; flex-shrink: 0; }
+        .status-dot { width: 10px; height: 10px; border-radius: 50%; background-color: #CBD5E1; flex-shrink: 0; }
         .status-dot.green { background-color: #22C55E; }
         .status-dot.red { background-color: #EF4444; }
         .status-dot.yellow { background-color: #EAB308; }
@@ -92,7 +107,6 @@
         .btn-pdf:hover { background: #0D5E57; }
         .btn-pdf-ans { background: #7C3AED; color: white; font-size: 14px; padding: 10px 16px; }
         .btn-pdf-ans:hover { background: #6D28D9; }
-        /* เฉลยละเอียด box */
         .solution-box { background: #F0FDF4; border: 2px solid #86EFAC; border-radius: 12px; padding: 20px; margin-top: 20px; }
         .solution-box-title { font-weight: 700; color: #166534; font-size: 15px; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
     </style>
@@ -247,9 +261,7 @@
         <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
             <h2 id="adminEditingTitle">ชุดข้อสอบ: ...</h2>
             <div style="display:flex; gap:8px; flex-wrap:wrap;">
-                <!-- FIX 4: 1 ข้อ/หน้า -->
                 <button class="btn-pdf" id="btnExportPDF">📄 พิมพ์โจทย์ (1 ข้อ/หน้า)</button>
-                <!-- NEW 6: พิมพ์พร้อมเฉลย -->
                 <button class="btn-pdf-ans" id="btnExportPDFAns">📋 พิมพ์โจทย์+เฉลย</button>
             </div>
         </div>
@@ -263,14 +275,10 @@
         <div style="background: white; border: 1px solid var(--border-color); padding: 30px; border-radius: 12px;">
             <h3 id="adminFormTitle">แก้ไขรายละเอียดคำถาม</h3>
             <input type="hidden" id="adminCurrentQId">
-
-            <!-- FIX 1: ช่องข้อที่ — ไม่ readonly แล้ว -->
             <div class="form-group">
                 <label>ลำดับข้อที่: <small style="color:#94A3B8;">(แก้ไขได้)</small></label>
                 <input type="number" id="adminQNum" min="1" style="background:#FFFDF9; border-color: var(--primary-yellow);">
             </div>
-
-            <!-- รูปภาพ -->
             <div class="form-group">
                 <label>รูปภาพประกอบคำถาม:</label>
                 <div class="img-upload-area" id="imgUploadArea" onclick="document.getElementById('adminQImageFile').click()">
@@ -281,8 +289,6 @@
                 </div>
                 <input type="hidden" id="adminQImageData">
             </div>
-
-            <!-- คำถาม -->
             <div class="form-group">
                 <label>พิมพ์คำถาม/โจทย์ข้อสอบ:</label>
                 <div class="question-input-wrap">
@@ -312,8 +318,6 @@
                     <small style="color:#94A3B8; font-size:12px; margin-top:4px; display:block;">💡 แตะในช่องข้อความแล้วพิมพ์จากแป้นพิมพ์อุปกรณ์ได้เลย</small>
                 </div>
             </div>
-
-            <!-- เฉลย + คะแนน -->
             <div style="border-top: 1px dashed var(--border-color); padding-top: 15px; margin-top: 5px;">
                 <div class="answer-score-row">
                     <label>คะแนนข้อนี้:</label>
@@ -341,8 +345,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- NEW 5: เฉลยละเอียด -->
             <div class="solution-box">
                 <div class="solution-box-title">📖 เฉลยละเอียด (วิธีทำ / อธิบาย)</div>
                 <div class="question-input-wrap">
@@ -375,7 +377,6 @@
                     </div>
                 </div>
             </div>
-
             <button class="btn-primary" id="btnAdminSaveQ" style="margin-top:20px;">💾 บันทึกโจทย์และเฉลยข้อนี้</button>
         </div>
     </div>
@@ -416,7 +417,6 @@
         el.setSelectionRange(pos, pos);
     };
 
-    // Image upload
     document.getElementById('adminQImageFile').addEventListener('change', function(e) {
         const file = e.target.files[0];
         if(!file) return;
@@ -452,7 +452,6 @@
         }
     }
 
-    // Confirm modal
     let confirmCallback = null;
     function showConfirm(msg, cb) {
         document.getElementById('confirmModalText').innerText = msg;
@@ -467,7 +466,6 @@
         if(confirmCallback) confirmCallback(); confirmCallback = null;
     });
 
-    // Login
     document.getElementById('btnPlayerLogin').addEventListener('click', () => {
         const name = document.getElementById('playerNameInput').value.trim();
         if(!name) { alert('กรุณาระบุชื่อก่อนเข้าเรียนครับ'); return; }
@@ -484,7 +482,6 @@
         } else { alert('รหัสผ่านไม่ถูกต้อง'); }
     });
 
-    // Firebase listeners
     onValue(ref(database, 'quizzes'), (snapshot) => {
         globalQuizzes = snapshot.val() || {};
         renderAdminDashboard(); renderPlayerQuizzes();
@@ -497,7 +494,6 @@
         }
     });
 
-    // Admin dashboard
     document.getElementById('btnCreate').addEventListener('click', () => {
         const name = document.getElementById('examNameInput').value.trim();
         const sub = document.getElementById('subjectSelect').value;
@@ -564,7 +560,6 @@
         });
     }
 
-    // Score table
     function openScoreTable(quizId) {
         currentScoreTableQuizId = quizId;
         scoreSortMode = "name";
@@ -624,7 +619,6 @@
         document.getElementById('scoreTableModal').style.display = 'none'; currentScoreTableQuizId = null;
     });
 
-    // Admin quiz manage
     let currentQuizListener = null;
     function openAdminQuizManage(quizId) {
         currentQuizId = quizId;
@@ -641,7 +635,6 @@
     function renderAdminQuestionNodes() {
         const container = document.getElementById('adminQuestionNodes');
         container.innerHTML = '';
-        // FIX 2: sort by questionNumber ascending
         const qIds = Object.keys(currentQuizQuestions).sort((a,b) =>
             (currentQuizQuestions[a].questionNumber||0) - (currentQuizQuestions[b].questionNumber||0)
         );
@@ -684,7 +677,6 @@
         currentActiveQuestionId = "";
         document.getElementById('adminFormTitle').innerText = `➕ เพิ่มข้อสอบข้อใหม่ (ข้อที่ ${num})`;
         document.getElementById('adminCurrentQId').value = "";
-        // FIX 1: set value but allow edit
         document.getElementById('adminQNum').value = num;
         document.getElementById('adminQText').value = "";
         document.getElementById('adminQAnswer').value = "";
@@ -702,7 +694,6 @@
         document.getElementById('adminQText').value = data.questionText || "";
         document.getElementById('adminQAnswer').value = data.correctAnswer || "";
         document.getElementById('adminQScore').value = data.score || "5";
-        // FIX 5: load solution
         document.getElementById('adminQSolution').value = data.solution || "";
         setAdminImagePreview(data.imageData || data.imageUrl || '');
         renderAdminQuestionNodes();
@@ -717,7 +708,6 @@
 
     document.getElementById('btnAdminSaveQ').addEventListener('click', () => {
         let qid = document.getElementById('adminCurrentQId').value;
-        // FIX 1: read editable num field
         const num = parseInt(document.getElementById('adminQNum').value) || 1;
         const imageData = document.getElementById('adminQImageData').value.trim();
         const text = document.getElementById('adminQText').value.trim();
@@ -736,8 +726,7 @@
     });
 
     // ========================
-    // PDF: โจทย์เปล่า (1 ข้อ/หน้า, รูปใหญ่, ไม่มีบรรทัดคำตอบ)
-    // FIX 3+4
+    // PDF helpers
     // ========================
     function getSortedQIds() {
         return Object.keys(currentQuizQuestions).sort((a,b) =>
@@ -750,8 +739,25 @@
         <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600;700&display=swap" rel="stylesheet">
         <style>
             body { font-family: 'Sarabun', sans-serif; margin: 0; padding: 0; }
-            .page { width: 210mm; min-height: 297mm; padding: 18mm 20mm; box-sizing: border-box; page-break-after: always; display: flex; flex-direction: column; }
-            /* FIX 3: ชื่อข้อสอบใหญ่ มีกล่อง */
+
+            /* FIX 1: ไม่ใช้ page-break-after บน .page ตรงๆ
+               ใช้ break-after: page บน .page แต่ยกเว้นข้อสุดท้าย
+               วิธีที่ดีที่สุดคือ ใส่ class .page-break แทน .page
+               และใช้ CSS :not(:last-child) */
+            .page {
+                width: 210mm;
+                min-height: 297mm;
+                padding: 18mm 20mm;
+                box-sizing: border-box;
+                display: flex;
+                flex-direction: column;
+            }
+            /* เพิ่ม page break ก่อนทุกข้อ ยกเว้นข้อแรก */
+            .page + .page {
+                break-before: page;
+                page-break-before: always;
+            }
+
             .exam-title-box {
                 border: 3px solid #D62828; border-radius: 10px; padding: 14px 22px;
                 text-align: center; margin-bottom: 22px; background: #FFF9F9;
@@ -760,15 +766,16 @@
             .exam-title-box .sub { font-size: 14px; color: #666; margin-top: 4px; }
             .q-header { font-weight: 700; font-size: 20px; margin-bottom: 12px; display:flex; justify-content: space-between; align-items: center; }
             .q-score-badge { background: #FEF3C7; border: 1px solid #F59E0B; padding: 4px 14px; border-radius: 20px; font-size: 15px; color: #92400E; font-weight: 700; }
-            /* FIX 4: รูปใหญ่ */
             .q-img { width: 100%; max-height: 340px; object-fit: contain; display: block; margin: 14px 0; border-radius: 8px; border: 1px solid #E2E8F0; }
             .q-text { font-size: 17px; line-height: 1.8; white-space: pre-wrap; background: #FAF9F5; padding: 16px; border-radius: 8px; border-left: 5px solid #F4A261; flex: 1; }
-            /* เฉลยส่วน */
             .solution-section { margin-top: 20px; border-top: 2px dashed #86EFAC; padding-top: 16px; }
             .solution-label { font-size: 15px; font-weight: 700; color: #166534; margin-bottom: 8px; }
             .solution-answer { background: #DCFCE7; border: 1px solid #86EFAC; border-radius: 8px; padding: 10px 16px; font-size: 16px; font-weight: 700; color: #14532D; margin-bottom: 10px; }
             .solution-text { font-size: 15px; line-height: 1.8; white-space: pre-wrap; background: #F0FDF4; padding: 14px; border-radius: 8px; }
-            @media print { .page { page-break-after: always; } }
+            @media print {
+                /* break-before แทน break-after ป้องกันหน้าเปล่าหลังข้อสุดท้าย */
+                .page + .page { break-before: page; page-break-before: always; }
+            }
         </style></head><body>`;
     }
 
@@ -799,7 +806,6 @@
         if(win) setTimeout(() => win.print(), 1000);
     });
 
-    // NEW 6: พิมพ์โจทย์ + เฉลยละเอียด
     document.getElementById('btnExportPDFAns').addEventListener('click', () => {
         const qIds = getSortedQIds();
         if(qIds.length === 0) { alert('ไม่มีข้อสอบในชุดนี้'); return; }
@@ -961,5 +967,3 @@
 </script>
 </body>
 </html>
-HTMLEOF
-echo "Done: $(wc -l < /home/claude/quiz_v3.html) lines"
